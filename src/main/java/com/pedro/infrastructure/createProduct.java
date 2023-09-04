@@ -1,0 +1,48 @@
+package com.pedro.infrastructure;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+
+public class createProduct {
+    private String url;
+    private String usuario;
+    private String senha;
+    private String database;
+
+    private Connection con;
+
+    public void create(String nome, String descricao, String ean13, String preco, String quantidade, String min_quantidade){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String sql = "INSERT INTO produtos (nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, l_ativo) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            statement.setString(1, nome);
+            statement.setString(2, descricao);
+            statement.setString(3, ean13);
+            statement.setFloat(4, Float.parseFloat(preco));
+            statement.setInt(5, Integer.parseInt(quantidade));
+            statement.setInt(6, Integer.parseInt(min_quantidade));
+            statement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            statement.setBoolean(8, false);
+
+            int rows = statement.executeUpdate();
+            System.out.println("Novo produto adicionado.");
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+}
