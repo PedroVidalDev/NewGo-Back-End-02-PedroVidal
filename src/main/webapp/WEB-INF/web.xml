@@ -20,4 +20,14 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     <url-pattern> /cadastrar </url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name> consultarServlet </servlet-name>
+    <servlet-class>com.pedro.domain.servlets.ConsultarServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> consultarServlet </servlet-name>
+    <url-pattern> /consultar </url-pattern>
+  </servlet-mapping>
+
 </web-app>

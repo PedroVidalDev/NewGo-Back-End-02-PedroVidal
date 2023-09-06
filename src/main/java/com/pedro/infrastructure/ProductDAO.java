@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class ProductDAO {
     private String url;
@@ -76,4 +77,43 @@ public class ProductDAO {
         }
         return false;
     }
+
+    public ArrayList consultar(int id){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "select * from produtos where id =?";
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            preparedStatementNome.setInt(1, id);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            if(rs.next()){
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String ean13 = rs.getString("ean13");
+                float preco = rs.getFloat("preco");
+                int quantidade = rs.getInt("quantidade");
+
+                ArrayList produto = new ArrayList();
+                produto.add(0, nome);
+                produto.add(1, descricao);
+                produto.add(2, ean13);
+                produto.add(3, preco);
+                produto.add(4, quantidade);
+
+                return produto;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
+
