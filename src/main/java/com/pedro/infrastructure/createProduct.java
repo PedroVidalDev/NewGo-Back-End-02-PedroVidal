@@ -13,7 +13,8 @@ public class createProduct {
 
     private Connection con;
 
-    public void create(String nome, String descricao, String ean13, String preco, String quantidade, String min_quantidade){
+    public void create(String nome, String descricao, String ean13, float preco, int quantidade, int min_quantidade){
+
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -30,9 +31,9 @@ public class createProduct {
             statement.setString(1, nome);
             statement.setString(2, descricao);
             statement.setString(3, ean13);
-            statement.setFloat(4, Float.parseFloat(preco));
-            statement.setInt(5, Integer.parseInt(quantidade));
-            statement.setInt(6, Integer.parseInt(min_quantidade));
+            statement.setFloat(4, preco);
+            statement.setInt(5, quantidade);
+            statement.setInt(6, min_quantidade);
             statement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             statement.setBoolean(8, false);
 
@@ -43,6 +44,4 @@ public class createProduct {
             e.printStackTrace();
         }
     }
-
-
 }
