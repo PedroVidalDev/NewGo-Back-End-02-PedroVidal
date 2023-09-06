@@ -1,11 +1,13 @@
 package com.pedro.infrastructure;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.sql.ResultSet;
 
-public class createProduct {
+public class ProductDAO {
     private String url;
     private String usuario;
     private String senha;
@@ -43,5 +45,35 @@ public class createProduct {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public boolean validate(String nome, String ean13){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String nomeVerify = "select * from produtos where nome =?";
+            PreparedStatement preparedStatementNome = con.prepareStatement(nomeVerify);
+            preparedStatementNome.setString(1, nome);
+            ResultSet rsNome = preparedStatementNome.executeQuery();
+
+            String ean13Verify = "select * from produtos where ean13 =?";
+            PreparedStatement preparedStatementEan = con.prepareStatement(ean13Verify);
+            preparedStatementEan.setString(1, ean13);
+            ResultSet rsEan = preparedStatementEan.executeQuery();
+
+            if(rsNome.next() && rsEan.next()){
+                return true;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
