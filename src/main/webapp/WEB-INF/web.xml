@@ -49,4 +49,15 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     <servlet-name> lativoServlet </servlet-name>
     <url-pattern> /lativoAlterar </url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name> editarServlet </servlet-name>
+    <servlet-class>com.pedro.domain.servlets.EditarServlet </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> editarServlet </servlet-name>
+    <url-pattern> /editar </url-pattern>
+  </servlet-mapping>
+
 </web-app>

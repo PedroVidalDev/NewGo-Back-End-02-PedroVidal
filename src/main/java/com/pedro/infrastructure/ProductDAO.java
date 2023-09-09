@@ -149,13 +149,36 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            int affectedRows = 0;
-
             String productSelect = "update produtos set l_ativo =?, dtupdate=? where id =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setBoolean(1, lativo);
             preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(3, id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void alterar(int id, String descricao, int quantidade, int estoque_min){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "update produtos set descricao =?, quantidade=?, estoque_min=?, dtupdate=? where id =?";
+            PreparedStatement preparedStatement = con.prepareStatement(productSelect);
+            preparedStatement.setString(1, descricao);
+            preparedStatement.setInt(2, quantidade);
+            preparedStatement.setInt(3, estoque_min);
+            preparedStatement.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(5, id);
 
             preparedStatement.executeUpdate();
 
