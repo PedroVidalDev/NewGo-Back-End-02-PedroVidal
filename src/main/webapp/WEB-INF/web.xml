@@ -32,7 +32,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> excluirServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.ExcluirServlet</servlet-class>
+    <servlet-class>com.pedro.domain.servlets.ExcluirServlet </servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -40,4 +40,13 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     <url-pattern> /excluir </url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name> lativoServlet </servlet-name>
+    <servlet-class>com.pedro.domain.servlets.LativoServlet </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> lativoServlet </servlet-name>
+    <url-pattern> /lativoAlterar </url-pattern>
+  </servlet-mapping>
 </web-app>

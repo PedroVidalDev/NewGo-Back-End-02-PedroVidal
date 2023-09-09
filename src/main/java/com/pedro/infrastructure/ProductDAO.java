@@ -131,8 +131,33 @@ public class ProductDAO {
             String productSelect = "delete from produtos where id =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setInt(1, id);
-            affectedRows = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
 
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void LativoAlterar(int id, boolean lativo){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            int affectedRows = 0;
+
+            String productSelect = "update produtos set l_ativo =?, dtupdate=? where id =?";
+            PreparedStatement preparedStatement = con.prepareStatement(productSelect);
+            preparedStatement.setBoolean(1, lativo);
+            preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(3, id);
+
+            preparedStatement.executeUpdate();
 
         } catch (Exception e){
             e.printStackTrace();
