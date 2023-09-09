@@ -99,6 +99,7 @@ public class ProductDAO {
                 String ean13 = rs.getString("ean13");
                 float preco = rs.getFloat("preco");
                 int quantidade = rs.getInt("quantidade");
+                boolean lativo = rs.getBoolean("l_ativo");
 
                 ArrayList produto = new ArrayList();
                 produto.add(0, nome);
@@ -106,6 +107,7 @@ public class ProductDAO {
                 produto.add(2, ean13);
                 produto.add(3, preco);
                 produto.add(4, quantidade);
+                produto.add(5, lativo);
 
                 return produto;
             }
@@ -172,7 +174,7 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "update produtos set descricao =?, quantidade=?, estoque_min=?, dtupdate=? where id =?";
+            String productSelect = "update produtos set descricao =?, quantidade=?, estoque_min=?, dtupdate=?, l_ativo=true where id =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setString(1, descricao);
             preparedStatement.setInt(2, quantidade);

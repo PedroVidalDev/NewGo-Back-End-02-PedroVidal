@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pedro.infrastructure.ProductDAO;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,21 +25,35 @@ public class EditarServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
+        int esc;
+
         int id = array.get("id").getAsInt();
         String descricao = array.get("descricao").getAsString();
         int quantidade = array.get("quantidade").getAsInt();
         int estoque_min = array.get("estoque_min").getAsInt();
+        boolean lativo = array.get("lativo").getAsBoolean();
 
         ArrayList produto = ProductCRUD.consultar(id);
+        boolean lativo_antigo = (boolean) produto.get(5);
 
         if(produto == null){
             System.out.println("Produto nao encontrado");
-        } else{
+        }
+
+        else{
+
+            if(!lativo_antigo && !lativo) {
+                System.out.println("Produto esta inativo.");
+                System.out.println("Nao sera possivel alterar o produto.");
+                return;
+            }
 
             if(descricao != "" && quantidade > 0 && estoque_min > 0){
                 ProductCRUD.alterar(id, descricao, quantidade, estoque_min);
                 System.out.println("Produto alterado.");
-            } else{
+            }
+
+            else{
                 System.out.println("Informacoes novas invalidas.");
             }
 
