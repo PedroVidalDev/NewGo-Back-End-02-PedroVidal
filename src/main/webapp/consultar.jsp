@@ -57,39 +57,50 @@
         font-size: 4rem;
     }
 
+    label{
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    input{
+        border: 0;
+        height: 25px;
+        font-size: 15px;
+    }
+
+    input:focus-visible {
+        outline: none;
+    }
+
+    input:active{
+        border: 0;
+    }
+
     .buttonSubmit{
         position: relative;
-        width: 90%;
+        width: 100%;
         height: 50px;
         border-radius: 20px;
         border: 0;
         background-color: #242436;
         color: #fff;
+        margin-top: 20px;
         cursor: pointer;
-        margin-bottom: 20px;
-        transition: 0.5s;
     }
-
-    .buttonSubmit:hover{
-        background-color: #3e3e5d;
-    }
-
-    a{
-        color: white;
-    }
-
 </style>
 
 <body>
 <header></header>
 <main>
     <div class="formDiv">
-        <p class="formTitle"> Acoes </p>
+        <p class="formTitle"> Consultar </p>
 
-        <br><br>
-
-        <button class="buttonSubmit"> <a href="create.jsp"> Adicionar produto </a> </button>
-        <button class="buttonSubmit"> <a href="consultar.jsp"> Consultar produto </a> </button>
+        <form action="/serveletTest_war/consultar" method="GET">
+            <label for="id"> Digitar ID do produto: </label>
+            <input type="number" name="id" id="id">
+            <input type="submit" class="buttonSubmit" value="Enviar">
+        </form>
 
     </div>
 </main>

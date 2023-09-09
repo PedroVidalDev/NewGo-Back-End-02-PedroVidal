@@ -115,5 +115,28 @@ public class ProductDAO {
         }
         return null;
     }
+
+    public void deletar(int id){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            int affectedRows = 0;
+
+            String productSelect = "delete from produtos where id =?";
+            PreparedStatement preparedStatement = con.prepareStatement(productSelect);
+            preparedStatement.setInt(1, id);
+            affectedRows = preparedStatement.executeUpdate();
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
 
