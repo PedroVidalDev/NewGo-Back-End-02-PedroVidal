@@ -68,7 +68,7 @@ public class ProductDAO {
             preparedStatementEan.setString(1, ean13);
             ResultSet rsEan = preparedStatementEan.executeQuery();
 
-            if(rsNome.next() && rsEan.next()){
+            if(rsNome.next() || rsEan.next()){
                 return true;
             }
 

@@ -41,7 +41,7 @@ public class CadastrarServlet extends HttpServlet {
             return;
         }
 
-        if(ProductCRUD.validate(nome, ean13) == true){
+        else if(ProductCRUD.validate(nome, ean13) == true){
             resp.sendError(505);
             return;
         }

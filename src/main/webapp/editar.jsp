@@ -57,42 +57,73 @@
         font-size: 4rem;
     }
 
-    .buttonSubmit{
+    label{
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    input{
+        border: 0;
+        height: 25px;
+        font-size: 15px;
+    }
+
+    input:focus-visible {
+        outline: none;
+    }
+
+    input:active{
+        border: 0;
+    }
+
+    #buttonSubmit{
         position: relative;
-        width: 90%;
+        width: 100%;
         height: 50px;
         border-radius: 20px;
         border: 0;
         background-color: #242436;
         color: #fff;
         cursor: pointer;
-        margin-bottom: 20px;
-        transition: 0.5s;
     }
-
-    .buttonSubmit:hover{
-        background-color: #3e3e5d;
-    }
-
-    a{
-        color: white;
-    }
-
 </style>
 
 <body>
 <header></header>
 <main>
     <div class="formDiv">
-        <p class="formTitle"> Acoes </p>
-
+        <p class="formTitle"> Editar </p>
         <br><br>
+        <form action="/serveletTest_war/editar" method="POST">
 
-        <button class="buttonSubmit"> <a href="create.jsp"> Adicionar produto </a> </button>
-        <button class="buttonSubmit"> <a href="consultar.jsp"> Consultar produto </a> </button>
-        <button class="buttonSubmit"> <a href="editar.jsp"> Editar produto </a> </button>
-        <button class="buttonSubmit"> <a href="excluir.jsp"> Excluir produto </a> </button>
+            <label for="id"> Digite o UUID do produto: </label>
+            <input type="number" id="id" name="id" minlength="1" min="1"/>
 
+            <br>
+
+            <label for="descricao"> Digite a descricao do produto: </label>
+            <input type="text" id="descricao" name="descricao" minlength="10"/>
+
+            <br>
+
+            <label for="preco"> Digite o preco do produto: </label>
+            <input type="number" id="preco" name="preco" min="1"/>
+
+            <br>
+
+            <label for="quantidade"> Digite a quantidade em estoque: </label>
+            <input type="number" id="quantidade" name="quantidade" min="1"/>
+
+            <br>
+
+            <label for="min_quantidade"> Digite a quantidade minima de estoque: </label>
+            <input type="number" id="min_quantidade" name="min_quantidade" min="1"/>
+
+            <br>
+
+            <input type="submit" id="buttonSubmit" value="Enviar" />
+        </form>
     </div>
 </main>
 <footer></footer>
