@@ -24,8 +24,17 @@ public class LativoServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        int id = array.get("id").getAsInt();
-        boolean lativo = array.get("lativo").getAsBoolean();
+        int id;
+        boolean lativo;
+
+        try {
+            id = array.get("id").getAsInt();
+            lativo = array.get("lativo").getAsBoolean();
+        } catch(NullPointerException e){
+            System.out.println("Carencia de dados ao alterar o l_ativo do produto");
+            resp.sendError(505);
+            return;
+        }
 
         ArrayList produto = ProductCRUD.consultar(id);
 

@@ -24,7 +24,15 @@ public class ExcluirServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        int id = array.get("id").getAsInt();
+        int id;
+
+        try {
+            id = array.get("id").getAsInt();
+        } catch(NullPointerException e){
+            System.out.println("Carencia de dados ao deletar, favor enviar dado corretamente.");
+            resp.sendError(505);
+            return;
+        }
 
         ArrayList produto = ProductCRUD.consultar(id);
 

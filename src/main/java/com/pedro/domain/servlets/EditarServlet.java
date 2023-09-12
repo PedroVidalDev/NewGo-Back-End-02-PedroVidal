@@ -27,11 +27,24 @@ public class EditarServlet extends HttpServlet {
 
         int esc;
 
-        int id = array.get("id").getAsInt();
-        String descricao = array.get("descricao").getAsString();
-        int quantidade = array.get("quantidade").getAsInt();
-        int estoque_min = array.get("estoque_min").getAsInt();
-        boolean lativo = array.get("lativo").getAsBoolean();
+        int id;
+        String descricao;
+        int quantidade;
+        int estoque_min;
+        boolean lativo;
+
+        try {
+            id = array.get("id").getAsInt();
+            descricao = array.get("descricao").getAsString();
+            quantidade = array.get("quantidade").getAsInt();
+            estoque_min = array.get("estoque_min").getAsInt();
+            lativo = array.get("lativo").getAsBoolean();
+
+        } catch(NullPointerException e){
+            System.out.println("Carencia de dados ao editar detectada...");
+            resp.sendError(505);
+            return;
+        }
 
         ArrayList produto = ProductCRUD.consultar(id);
         boolean lativo_antigo = (boolean) produto.get(5);

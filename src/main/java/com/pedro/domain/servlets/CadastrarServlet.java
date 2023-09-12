@@ -52,7 +52,7 @@ public class CadastrarServlet extends HttpServlet {
                 min_quantidade = array.get("min_quantidade").getAsInt();
             }
         } catch(NullPointerException e){
-            System.out.println("Carencia de dados detectada...");
+            System.out.println("Carencia de dados detectada ao criar produto...");
             resp.sendError(505);
             return;
         }
