@@ -24,24 +24,56 @@ public class CadastrarServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        String nome = array.get("nome").getAsString();
-        String descricao = array.get("descricao").getAsString();
-        String ean13 = array.get("ean13").getAsString();
-        float preco = array.get("preco").getAsFloat();
-        int quantidade = array.get("quantidade").getAsInt();
-        int min_quantidade = array.get("min_quantidade").getAsInt();
+        String nome;
+        String descricao;
+        String ean13;
+        float preco;
+        int quantidade, min_quantidade;
+
+        try {
+            descricao = array.get("descricao").getAsString();
+            ean13 = array.get("ean13").getAsString();
+
+            if (array.get("preco").isJsonNull()) {
+                preco = 0;
+            } else {
+                preco = array.get("preco").getAsFloat();
+            }
+
+            if (array.get("quantidade").isJsonNull()) {
+                quantidade = 0;
+            } else {
+                quantidade = array.get("quantidade").getAsInt();
+            }
+
+            if (array.get("min_quantidade").isJsonNull()) {
+                min_quantidade = 0;
+            } else {
+                min_quantidade = array.get("min_quantidade").getAsInt();
+            }
+        } catch(NullPointerException e){
+            System.out.println("Carencia de dados detectada...");
+            resp.sendError(505);
+            return;
+        }
 
         if(preco < 0 || quantidade < 0 || min_quantidade < 0){
             resp.sendError(505);
             return;
         }
 
-        else if(nome.equals("") || nome == null){
+        if(array.get("nome").isJsonNull()){
             resp.sendError(505);
             return;
+        } else{
+            nome = array.get("nome").getAsString();
+            if(nome.isEmpty()){
+                resp.sendError(505);
+                return;
+            }
         }
 
-        else if(ProductCRUD.validate(nome, ean13) == true){
+        if(ProductCRUD.validate(nome, ean13) == true){
             resp.sendError(505);
             return;
         }

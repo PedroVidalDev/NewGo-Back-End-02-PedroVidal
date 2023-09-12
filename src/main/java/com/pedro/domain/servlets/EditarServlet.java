@@ -45,6 +45,7 @@ public class EditarServlet extends HttpServlet {
             if(!lativo_antigo && !lativo) {
                 System.out.println("Produto esta inativo.");
                 System.out.println("Nao sera possivel alterar o produto.");
+                resp.sendError(505);
                 return;
             }
 
