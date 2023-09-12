@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="x-UTF-16LE-BOM">
-    <link rel="stylesheet" href="WEB-INF/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title> NewGO - Servlet </title>
 </head>
 
@@ -95,7 +95,7 @@
     <div class="formDiv">
         <p class="formTitle"> Editar </p>
         <br><br>
-        <form action="/serveletTest_war/editar" method="POST">
+        <form action="/serveletTest_war/products/editar" method="POST">
 
             <label for="id"> Digite o UUID do produto: </label>
             <input type="number" id="id" name="id" minlength="1" min="1"/>

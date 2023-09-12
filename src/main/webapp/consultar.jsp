@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="x-UTF-16LE-BOM">
-    <link rel="stylesheet" href="WEB-INF/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title> NewGO - Servlet </title>
 </head>
 
@@ -96,7 +96,7 @@
     <div class="formDiv">
         <p class="formTitle"> Consultar </p>
 
-        <form action="/serveletTest_war/consultar" method="GET">
+        <form action="/serveletTest_war/products/consultar" method="GET">
             <label for="id"> Digitar ID do produto: </label>
             <input type="number" name="id" id="id">
             <input type="submit" class="buttonSubmit" value="Enviar">

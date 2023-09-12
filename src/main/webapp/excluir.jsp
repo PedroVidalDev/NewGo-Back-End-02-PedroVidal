@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="x-UTF-16LE-BOM">
-    <link rel="stylesheet" href="WEB-INF/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title> NewGO - Servlet </title>
 </head>
 
@@ -96,7 +96,7 @@
     <div class="formDiv">
         <p class="formTitle"> Excluir </p>
 
-        <form action="/serveletTest_war/excluir" method="GET">
+        <form action="/serveletTest_war/products/excluir" method="post">
             <label for="id"> Digitar ID do produto: </label>
             <input type="number" name="id" id="id" min="1">
             <input type="submit" class="buttonSubmit" value="Deletar">

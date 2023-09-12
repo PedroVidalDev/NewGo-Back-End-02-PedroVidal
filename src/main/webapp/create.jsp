@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="x-UTF-16LE-BOM">
-    <link rel="stylesheet" href="WEB-INF/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title> NewGO - Servlet </title>
 </head>
 
@@ -95,7 +95,7 @@
     <div class="formDiv">
         <p class="formTitle"> Cadastrar </p>
         <br><br>
-        <form action="/serveletTest_war/cadastrar" method="POST">
+        <form action="/serveletTest_war/products/cadastrar" method="POST">
             <label for="nome"> Escreva o nome do produto: </label>
             <input type="text" id="nome" name="nome" minlength="3"/>
 

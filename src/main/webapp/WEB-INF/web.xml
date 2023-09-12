@@ -17,7 +17,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> cadastrarServlet </servlet-name>
-    <url-pattern> /cadastrar </url-pattern>
+    <url-pattern> /products/cadastrar </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -27,7 +27,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> consultarServlet </servlet-name>
-    <url-pattern> /consultar </url-pattern>
+    <url-pattern> /products/consultar </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -37,7 +37,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> excluirServlet </servlet-name>
-    <url-pattern> /excluir </url-pattern>
+    <url-pattern> /products/excluir </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -47,7 +47,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> lativoServlet </servlet-name>
-    <url-pattern> /lativoAlterar </url-pattern>
+    <url-pattern> /products/lativoAlterar </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -57,7 +57,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> editarServlet </servlet-name>
-    <url-pattern> /editar </url-pattern>
+    <url-pattern> /products/editar </url-pattern>
   </servlet-mapping>
 
 </web-app>

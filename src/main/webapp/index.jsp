@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="x-UTF-16LE-BOM">
-    <link rel="stylesheet" href="WEB-INF/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title> NewGO - Servlet </title>
 </head>
 
