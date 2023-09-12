@@ -28,6 +28,7 @@ public class EditarServlet extends HttpServlet {
         int esc;
 
         int id;
+        float preco;
         String descricao;
         int quantidade;
         int estoque_min;
@@ -35,6 +36,7 @@ public class EditarServlet extends HttpServlet {
 
         try {
             id = array.get("id").getAsInt();
+            preco = array.get("preco").getAsFloat();
             descricao = array.get("descricao").getAsString();
             quantidade = array.get("quantidade").getAsInt();
             estoque_min = array.get("estoque_min").getAsInt();
@@ -63,7 +65,7 @@ public class EditarServlet extends HttpServlet {
             }
 
             if(descricao != "" && quantidade > 0 && estoque_min > 0){
-                ProductCRUD.alterar(id, descricao, quantidade, estoque_min);
+                ProductCRUD.alterar(id, descricao, preco, quantidade, estoque_min);
                 System.out.println("Produto alterado.");
             }
 
