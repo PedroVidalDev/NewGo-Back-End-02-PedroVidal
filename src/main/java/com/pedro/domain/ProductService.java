@@ -109,7 +109,7 @@ public class ProductService {
                 return "Produto inativo";
             }
 
-            if (descricao != "" && quantidade > 0 && estoque_min > 0) {
+            if (descricao != "" && preco > 0 && quantidade > 0 && estoque_min > 0) {
                 ProductCRUD.alterar(id, descricao, preco, quantidade, estoque_min);
                 return "Produto alterado.";
             }
