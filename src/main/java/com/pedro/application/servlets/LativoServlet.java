@@ -1,8 +1,9 @@
-package com.pedro.domain.servlets;
+package com.pedro.application.servlets;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.pedro.domain.ProductService;
 import com.pedro.infrastructure.ProductDAO;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class LativoServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDAO ProductCRUD = new ProductDAO();
+        ProductService productService = new ProductService();
 
         BufferedReader data = req.getReader();
 
@@ -24,25 +25,12 @@ public class LativoServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        int id;
-        boolean lativo;
+        boolean confirmacao = productService.alterarLativo(array);
 
-        try {
-            id = array.get("id").getAsInt();
-            lativo = array.get("lativo").getAsBoolean();
-        } catch(NullPointerException e){
-            System.out.println("Carencia de dados ao alterar o l_ativo do produto");
-            resp.sendError(505);
-            return;
-        }
-
-        ArrayList produto = ProductCRUD.consultar(id);
-
-        if(produto == null){
-            System.out.println("Produto nao encontrado");
+        if(confirmacao){
+           System.out.println("Produto teve seu l_ativo editado.");
         } else{
-            ProductCRUD.LativoAlterar(id, lativo);
-            System.out.println("Produto teve seu l_ativo editado.");
+            System.out.println("Nao foi possivel alterar o l_ativo do produto.");
         }
     }
 }

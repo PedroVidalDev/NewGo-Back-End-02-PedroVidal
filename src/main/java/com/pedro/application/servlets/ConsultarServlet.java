@@ -1,8 +1,9 @@
-package com.pedro.domain.servlets;
+package com.pedro.application.servlets;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.pedro.domain.ProductService;
 import com.pedro.infrastructure.ProductDAO;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class ConsultarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDAO ProductCRUD = new ProductDAO();
+        ProductService productService = new ProductService();
 
         BufferedReader data = req.getReader();
 
@@ -24,17 +25,7 @@ public class ConsultarServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        int id;
-
-        try {
-            id = array.get("id").getAsInt();
-        } catch(NullPointerException e){
-            System.out.println("Carencia de dados ao consultar produto, favor enviar dado corretamente.");
-            resp.sendError(505);
-            return;
-        }
-
-        ArrayList produto = ProductCRUD.consultar(id);
+        ArrayList produto = productService.findProduto(array);
 
         if(produto == null){
             System.out.println("Produto nao encontrado");

@@ -1,8 +1,9 @@
-package com.pedro.domain.servlets;
+package com.pedro.application.servlets;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.pedro.domain.ProductService;
 import com.pedro.infrastructure.ProductDAO;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class ExcluirServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDAO ProductCRUD = new ProductDAO();
+        ProductService productService = new ProductService();
 
         BufferedReader data = req.getReader();
 
@@ -24,23 +25,13 @@ public class ExcluirServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        int id;
+        boolean confirmacao;
+        confirmacao = productService.excluirProduto(array);
 
-        try {
-            id = array.get("id").getAsInt();
-        } catch(NullPointerException e){
-            System.out.println("Carencia de dados ao deletar, favor enviar dado corretamente.");
-            resp.sendError(505);
-            return;
-        }
-
-        ArrayList produto = ProductCRUD.consultar(id);
-
-        if(produto == null){
-            System.out.println("Produto nao encontrado");
+        if(confirmacao){
+            System.out.println("Produto deletado com sucesso.");
         } else{
-            ProductCRUD.deletar(id);
-            System.out.println("Produto deletado.");
+            System.out.println("Falha ao deletar produto.");
         }
     }
 }

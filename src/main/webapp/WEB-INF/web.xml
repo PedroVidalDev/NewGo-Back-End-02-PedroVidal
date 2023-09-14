@@ -12,7 +12,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> cadastrarServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.CadastrarServlet</servlet-class>
+    <servlet-class>com.pedro.application.servlets.CadastrarServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -22,7 +22,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> consultarServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.ConsultarServlet</servlet-class>
+    <servlet-class>com.pedro.application.servlets.ConsultarServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -32,7 +32,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> excluirServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.ExcluirServlet </servlet-class>
+    <servlet-class>com.pedro.application.servlets.ExcluirServlet </servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -42,7 +42,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> lativoServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.LativoServlet </servlet-class>
+    <servlet-class>com.pedro.application.servlets.LativoServlet </servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -52,7 +52,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet>
     <servlet-name> editarServlet </servlet-name>
-    <servlet-class>com.pedro.domain.servlets.EditarServlet </servlet-class>
+    <servlet-class>com.pedro.application.servlets.EditarServlet </servlet-class>
   </servlet>
 
   <servlet-mapping>
