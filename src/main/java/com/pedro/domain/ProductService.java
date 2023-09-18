@@ -153,7 +153,7 @@ public class ProductService {
         return "Produto deletado.";
     }
 
-    public boolean alterarLativo(JsonObject info){
+    public String alterarLativo(JsonObject info){
         ProductDAO ProductCRUD = new ProductDAO();
 
         int id;
@@ -163,16 +163,16 @@ public class ProductService {
             id = info.get("id").getAsInt();
             lativo = info.get("lativo").getAsBoolean();
         } catch(NullPointerException e){
-            return false;
+            return "Carencia de dados";
         }
 
         Product produto = ProductCRUD.consultar(id);
 
         if(produto == null){
-            return false;
+            return "Produto nao encontrado.";
         } else{
             ProductCRUD.LativoAlterar(id, lativo);
-            return true;
+            return "Produto teve l_ativo alterado.";
         }
     }
 }

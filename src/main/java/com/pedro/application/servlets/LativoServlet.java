@@ -23,12 +23,9 @@ public class LativoServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        boolean confirmacao = productService.alterarLativo(array);
+        String confirmacao;
+        confirmacao = productService.alterarLativo(array);
 
-        if(confirmacao){
-           System.out.println("Produto teve seu l_ativo editado.");
-        } else{
-            System.out.println("Nao foi possivel alterar o l_ativo do produto.");
-        }
+        System.out.println(confirmacao);
     }
 }
