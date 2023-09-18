@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pedro.domain.ProductService;
-import com.pedro.infrastructure.ProductDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

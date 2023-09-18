@@ -1,12 +1,15 @@
 package com.pedro.domain;
 
 import com.google.gson.JsonObject;
-import com.pedro.infrastructure.ProductDAO;
+import com.pedro.infrastructure.DAOs.ProductDAO;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class ProductService {
-    public boolean criarProduto(JsonObject produto) {
+
+    // FUNCOES RELACIONADAS AO CRUD //
+    public String criarProduto(JsonObject produto) {
         ProductDAO ProductCRUD = new ProductDAO();
 
         String nome;
@@ -37,29 +40,36 @@ public class ProductService {
                 min_quantidade = produto.get("min_quantidade").getAsInt();
             }
         } catch (NullPointerException e) {
-            System.out.println("Carencia de dados detectada ao criar produto...");
-            return false;
+            return "Carencia de dados detectada ao criar produto...";
         }
 
-        if (preco < 0 || quantidade < 0 || min_quantidade < 0) {
-            return false;
+        if (preco < 0) {
+            return "Preco nao deve ser menor que zero.";
+        }
+
+        else if(quantidade < 0){
+            return "Quantidade nao deve ser menor que zero.";
+        }
+
+        else if(min_quantidade < 0){
+            return "Estoque minimo nao deve ser menor que zero.";
         }
 
         if (produto.get("nome").isJsonNull()) {
-            return false;
+            return "O parametro nome esta nulo. Erro.";
         } else {
             nome = produto.get("nome").getAsString();
             if (nome.isEmpty()) {
-                return false;
+                return "O parametro nome esta vazio. Erro.";
             }
         }
 
         if (ProductCRUD.validate(nome, ean13) == true) {
-            return false;
+            return "Ja existe um produto com esse nome cadastrado no sistema.";
         }
 
         ProductCRUD.create(nome, descricao, ean13, preco, quantidade, min_quantidade);
-        return true;
+        return "Produto cadastrado!";
     }
 
     public ArrayList findProduto(JsonObject info) {

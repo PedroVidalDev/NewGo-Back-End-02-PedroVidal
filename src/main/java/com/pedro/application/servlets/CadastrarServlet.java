@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pedro.domain.ProductService;
-import com.pedro.infrastructure.ProductDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,14 +24,10 @@ public class CadastrarServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        boolean confirmacao;
+        String confirmacao;
 
         confirmacao = productService.criarProduto(array);
 
-        if(confirmacao == true){
-            System.out.println("Cadastrou!");
-        } else{
-            System.out.println("Nao cadastrou o produto!");
-        }
+        System.out.println(confirmacao);
     }
 }
