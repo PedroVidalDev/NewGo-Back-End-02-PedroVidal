@@ -2,6 +2,7 @@ package com.pedro.domain;
 
 import com.google.gson.JsonObject;
 import com.pedro.infrastructure.DAOs.ProductDAO;
+import com.pedro.infrastructure.entities.Product;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -68,7 +69,9 @@ public class ProductService {
             return "Ja existe um produto com esse nome cadastrado no sistema.";
         }
 
-        ProductCRUD.create(nome, descricao, ean13, preco, quantidade, min_quantidade);
+        Product product = new Product(nome, descricao, ean13, preco, quantidade, min_quantidade);
+
+        ProductCRUD.create(product);
         return "Produto cadastrado!";
     }
 

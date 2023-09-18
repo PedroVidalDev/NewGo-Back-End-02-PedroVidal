@@ -1,5 +1,7 @@
 package com.pedro.infrastructure.DAOs;
 
+import com.pedro.infrastructure.entities.Product;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +18,7 @@ public class ProductDAO {
 
     private Connection con;
 
-    public void create(String nome, String descricao, String ean13, float preco, int quantidade, int min_quantidade){
+    public void create(Product product){
 
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
@@ -31,17 +33,16 @@ public class ProductDAO {
 
             PreparedStatement statement = con.prepareStatement(sql);
 
-            statement.setString(1, nome);
-            statement.setString(2, descricao);
-            statement.setString(3, ean13);
-            statement.setFloat(4, preco);
-            statement.setInt(5, quantidade);
-            statement.setInt(6, min_quantidade);
+            statement.setString(1, product.getNome());
+            statement.setString(2, product.getDescricao());
+            statement.setString(3, product.getEan13());
+            statement.setFloat(4, product.getPreco());
+            statement.setInt(5, product.getQuantidade());
+            statement.setInt(6, product.getEstoquemin());
             statement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             statement.setBoolean(8, false);
 
-            int rows = statement.executeUpdate();
-            System.out.println("Novo produto adicionado.");
+            statement.executeUpdate();
 
         } catch (Exception e){
             e.printStackTrace();

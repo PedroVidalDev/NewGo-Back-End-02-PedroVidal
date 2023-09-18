@@ -9,24 +9,20 @@ public class Product {
     private String nome;
     private String descricao;
     private String ean13;
-    private double preco;
+    private float preco;
     private int quantidade;
     private int estoque_min;
     private Timestamp dtcreate;
     private Timestamp dtupdate;
     private boolean lativo;
 
-    public Product (int id,
-                    UUID hash,
-                    String nome,
+    public Product (String nome,
                     String descricao,
                     String ean13,
-                    double preco,
+                    float preco,
                     int quantidade,
-                    int estoque_min,
-                    Timestamp dtcreate,
-                    Timestamp dtupdate,
-                    boolean lativo){
+                    int estoque_min
+                    ){
         this.id = id;
         this.hash = hash;
         this.nome = nome;
@@ -60,7 +56,7 @@ public class Product {
         return ean13;
     }
 
-    public double getPreco(){
+    public float getPreco(){
         return preco;
     }
 
