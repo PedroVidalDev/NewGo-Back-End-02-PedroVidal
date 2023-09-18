@@ -23,13 +23,9 @@ public class ExcluirServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        boolean confirmacao;
+        String confirmacao;
         confirmacao = productService.excluirProduto(array);
 
-        if(confirmacao){
-            System.out.println("Produto deletado com sucesso.");
-        } else{
-            System.out.println("Falha ao deletar produto.");
-        }
+        System.out.println(confirmacao);
     }
 }

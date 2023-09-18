@@ -79,7 +79,7 @@ public class ProductDAO {
         return false;
     }
 
-    public ArrayList consultar(int id){
+    public Product consultar(int id){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -100,17 +100,11 @@ public class ProductDAO {
                 String ean13 = rs.getString("ean13");
                 float preco = rs.getFloat("preco");
                 int quantidade = rs.getInt("quantidade");
-                boolean lativo = rs.getBoolean("l_ativo");
+                int estoque_min = rs.getInt("estoque_min");
 
-                ArrayList produto = new ArrayList();
-                produto.add(0, nome);
-                produto.add(1, descricao);
-                produto.add(2, ean13);
-                produto.add(3, preco);
-                produto.add(4, quantidade);
-                produto.add(5, lativo);
+                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
 
-                return produto;
+                return product;
             }
 
         } catch (Exception e){

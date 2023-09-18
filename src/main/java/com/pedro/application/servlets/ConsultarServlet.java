@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pedro.domain.ProductService;
+import com.pedro.infrastructure.entities.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,17 +25,18 @@ public class ConsultarServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        ArrayList produto = productService.findProduto(array);
+        Product product = productService.findProduto(array);
 
-        if(produto == null){
+        if(product == null){
             System.out.println("Produto nao encontrado");
         } else{
             System.out.println("=-=-=-=-= Informacoes do produto =-=-=-=-=-");
-            System.out.println("Nome: " + produto.get(0));
-            System.out.println("Descricao: " + produto.get(1));
-            System.out.println("Codigo de barras: " + produto.get(2));
-            System.out.println("Preco: R$ " + produto.get(3));
-            System.out.println("Quantidade em estoque: " + produto.get(4));
+            System.out.println("Nome: " + product.getNome());
+            System.out.println("Descricao: " + product.getDescricao());
+            System.out.println("Codigo de barras: " + product.getEan13());
+            System.out.println("Preco: R$ " + product.getPreco());
+            System.out.println("Quantidade em estoque: " + product.getQuantidade());
+            System.out.println("Estoque minimo: " + product.getEstoquemin());
         }
     }
 }

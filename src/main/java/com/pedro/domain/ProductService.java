@@ -75,7 +75,7 @@ public class ProductService {
         return "Produto cadastrado!";
     }
 
-    public ArrayList findProduto(JsonObject info) {
+    public Product findProduto(JsonObject info) {
         ProductDAO ProductCRUD = new ProductDAO();
 
         int id;
@@ -111,16 +111,16 @@ public class ProductService {
             return "Carencia de dados detectada.";
         }
 
-        ArrayList produto = ProductCRUD.consultar(id);
-        boolean lativo_antigo = (boolean) produto.get(5);
+        Product produto = ProductCRUD.consultar(id);
+        //boolean lativo_antigo = (boolean) produto.get(5);
 
         if (produto == null) {
             return "Produto nao encontrado.";
         } else {
 
-            if (!lativo_antigo && !lativo) {
-                return "Produto inativo";
-            }
+//            if (!lativo_antigo && !lativo) {
+//                return "Produto inativo";
+//            }
 
             if (descricao != "" && preco > 0 && quantidade > 0 && estoque_min > 0) {
                 ProductCRUD.alterar(id, descricao, preco, quantidade, estoque_min);
@@ -133,24 +133,24 @@ public class ProductService {
         }
     }
 
-    public boolean excluirProduto(JsonObject info) {
+    public String excluirProduto(JsonObject info) {
         ProductDAO ProductCRUD = new ProductDAO();
         int id;
 
         try {
             id = info.get("id").getAsInt();
         } catch (NullPointerException e) {
-            return false;
+            return "Carencia de parametros";
         }
 
-        ArrayList produto = ProductCRUD.consultar(id);
+        Product produto = ProductCRUD.consultar(id);
 
         if (produto == null) {
-            return false;
+            return "Produto nao encontrado.";
         } else {
             ProductCRUD.deletar(id);
         }
-        return true;
+        return "Produto deletado.";
     }
 
     public boolean alterarLativo(JsonObject info){
@@ -166,7 +166,7 @@ public class ProductService {
             return false;
         }
 
-        ArrayList produto = ProductCRUD.consultar(id);
+        Product produto = ProductCRUD.consultar(id);
 
         if(produto == null){
             return false;
