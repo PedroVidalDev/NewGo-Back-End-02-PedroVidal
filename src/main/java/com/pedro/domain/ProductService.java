@@ -76,22 +76,13 @@ public class ProductService {
         return "Produto cadastrado!";
     }
 
-    public Product findProduto(JsonObject info) {
+    public Product findProduto(int id) {
         ProductDAO ProductCRUD = new ProductDAO();
-
-        int id;
-
-        try {
-            id = info.get("id").getAsInt();
-        } catch (NullPointerException e) {
-            return null;
-        }
 
         return ProductCRUD.consultar(id);
     }
 
-    public String editarProduto(JsonObject info) {
-        int id;
+    public String editarProduto(int id, JsonObject info) {
         float preco;
         String descricao;
         int quantidade;
@@ -101,7 +92,6 @@ public class ProductService {
         ProductDAO ProductCRUD = new ProductDAO();
 
         try {
-            id = info.get("id").getAsInt();
             preco = info.get("preco").getAsFloat();
             descricao = info.get("descricao").getAsString();
             quantidade = info.get("quantidade").getAsInt();
@@ -142,15 +132,8 @@ public class ProductService {
         }
     }
 
-    public String excluirProduto(JsonObject info) {
+    public String excluirProduto(int id) {
         ProductDAO ProductCRUD = new ProductDAO();
-        int id;
-
-        try {
-            id = info.get("id").getAsInt();
-        } catch (NullPointerException e) {
-            return "Carencia de parametros";
-        }
 
         Product produto = ProductCRUD.consultar(id);
 
@@ -162,14 +145,12 @@ public class ProductService {
         return "Produto deletado.";
     }
 
-    public String alterarLativo(JsonObject info){
+    public String alterarLativo(int id, JsonObject info){
         ProductDAO ProductCRUD = new ProductDAO();
 
-        int id;
         boolean lativo;
 
         try {
-            id = info.get("id").getAsInt();
             lativo = info.get("lativo").getAsBoolean();
         } catch(NullPointerException e){
             return "Carencia de dados";

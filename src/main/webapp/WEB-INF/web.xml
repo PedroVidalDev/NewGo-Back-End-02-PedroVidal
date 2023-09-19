@@ -11,53 +11,33 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   </welcome-file-list>
 
   <servlet>
-    <servlet-name> cadastrarServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.CadastrarServlet</servlet-class>
+    <servlet-name> ProductsServlet </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductsServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> cadastrarServlet </servlet-name>
-    <url-pattern> /products/cadastrar </url-pattern>
+    <servlet-name> ProductsServlet </servlet-name>
+    <url-pattern> /products </url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name> consultarServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ConsultarServlet</servlet-class>
+    <servlet-name> ProductServlet </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> consultarServlet </servlet-name>
-    <url-pattern> /products/consultar </url-pattern>
+    <servlet-name> ProductServlet </servlet-name>
+    <url-pattern> /product </url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name> excluirServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ExcluirServlet </servlet-class>
+    <servlet-name> ProductServletLativo </servlet-name>
+    <servlet-class>com.pedro.application.servlets.LativoServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> excluirServlet </servlet-name>
-    <url-pattern> /products/excluir </url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name> lativoServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.LativoServlet </servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name> lativoServlet </servlet-name>
-    <url-pattern> /products/lativoAlterar </url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name> editarServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.EditarServlet </servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name> editarServlet </servlet-name>
-    <url-pattern> /products/editar </url-pattern>
+    <servlet-name> ProductServletLativo </servlet-name>
+    <url-pattern> /product/lativoAlterar </url-pattern>
   </servlet-mapping>
 
 </web-app>
