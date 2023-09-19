@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -111,19 +112,27 @@ public class ProductService {
             return "Carencia de dados detectada.";
         }
 
-        Product produto = ProductCRUD.consultar(id);
-        //boolean lativo_antigo = (boolean) produto.get(5);
+        Product product_old = ProductCRUD.consultar(id);
+        Product product = new Product(product_old.getNome(), descricao, product_old.getEan13(), preco, quantidade, estoque_min);
 
-        if (produto == null) {
+        boolean lativo_antigo = checkLativoBefore(id);
+
+        if (product_old == null) {
             return "Produto nao encontrado.";
-        } else {
+        }
 
-//            if (!lativo_antigo && !lativo) {
-//                return "Produto inativo";
-//            }
+        else if(product_old == product){
+            return "Nenhuma alteracao foi feita no produto.";
+        }
+
+        else {
+
+            if (!lativo_antigo && !lativo) {
+                return "Produto inativo, impossivel atualizar..";
+            }
 
             if (descricao != "" && preco > 0 && quantidade > 0 && estoque_min > 0) {
-                ProductCRUD.alterar(id, descricao, preco, quantidade, estoque_min);
+                ProductCRUD.alterar(id, product);
                 return "Produto alterado.";
             }
 
@@ -174,5 +183,12 @@ public class ProductService {
             ProductCRUD.LativoAlterar(id, lativo);
             return "Produto teve l_ativo alterado.";
         }
+    }
+
+    public boolean checkLativoBefore(int id){
+        ProductDAO ProductCRUD = new ProductDAO();
+
+        boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(id);
+        return lativo_antigo;
     }
 }

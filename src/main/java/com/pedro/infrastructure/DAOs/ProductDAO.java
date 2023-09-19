@@ -159,7 +159,7 @@ public class ProductDAO {
         }
     }
 
-    public void alterar(int id, String descricao, float preco, int quantidade, int estoque_min){
+    public void alterar(int id, Product product){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -171,10 +171,10 @@ public class ProductDAO {
 
             String productSelect = "update produtos set descricao=?, preco=?, quantidade=?, estoque_min=?, dtupdate=?, l_ativo=true where id =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
-            preparedStatement.setString(1, descricao);
-            preparedStatement.setFloat(2, preco);
-            preparedStatement.setInt(3, quantidade);
-            preparedStatement.setInt(4, estoque_min);
+            preparedStatement.setString(1, product.getDescricao());
+            preparedStatement.setFloat(2, product.getPreco());
+            preparedStatement.setInt(3, product.getQuantidade());
+            preparedStatement.setInt(4, product.getEstoquemin());
             preparedStatement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(6, id);
 
@@ -183,6 +183,32 @@ public class ProductDAO {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public boolean consultarLativoAntigo(int id){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        boolean lativo = false;
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "select l_ativo from produtos where id =?";
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            preparedStatementNome.setInt(1, id);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            lativo = rs.getBoolean("l_ativo");
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return lativo;
     }
 }
 
