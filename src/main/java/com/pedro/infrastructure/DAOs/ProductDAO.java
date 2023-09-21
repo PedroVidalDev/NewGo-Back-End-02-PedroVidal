@@ -261,7 +261,7 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "select * from produtos where quantidade<estoque_min";
+            String productSelect = "select * from produtos where quantidade<estoque_min AND l_ativo=true";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
             ResultSet rs = preparedStatementNome.executeQuery();
 
