@@ -70,4 +70,14 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     <url-pattern> /products/lativoTrueOne/* </url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductsConsultarQntMenorMin</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
+    <url-pattern> /products/consultarQntMenorMin </url-pattern>
+  </servlet-mapping>
+
 </web-app>

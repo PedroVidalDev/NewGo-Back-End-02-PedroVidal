@@ -177,4 +177,10 @@ public class ProductService {
 
         return ProductCRUD.filtrarProdutosLativo(lativo);
     }
+
+    public ArrayList filtrarProdutosComQntAbaixo(){
+        ProductDAO ProductCRUD = new ProductDAO();
+
+        return ProductCRUD.filtrarProdutosQntMenorMin();
+    }
 }
