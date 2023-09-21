@@ -130,7 +130,6 @@ public class ProductDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
-
         } catch (Exception e){
             e.printStackTrace();
         }
