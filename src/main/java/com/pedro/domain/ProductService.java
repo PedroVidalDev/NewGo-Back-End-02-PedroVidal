@@ -172,17 +172,8 @@ public class ProductService {
         return lativo_antigo;
     }
 
-    public ArrayList filtrarProdutosPorLativo(JsonObject info){
+    public ArrayList filtrarProdutosPorLativo(boolean lativo){
         ProductDAO ProductCRUD = new ProductDAO();
-
-        boolean lativo;
-
-        try {
-            lativo = info.get("lativo").getAsBoolean();
-
-        } catch (NullPointerException e) {
-            return null;
-        }
 
         return ProductCRUD.filtrarProdutosLativo(lativo);
     }

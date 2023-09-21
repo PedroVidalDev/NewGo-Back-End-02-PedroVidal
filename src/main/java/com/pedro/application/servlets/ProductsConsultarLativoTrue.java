@@ -21,13 +21,10 @@ public class ProductsConsultarLativoTrue extends HttpServlet {
         ProductService productService = new ProductService();
 
         PrintWriter writer = resp.getWriter();
-        BufferedReader data = req.getReader();
 
-        JsonParser parser = new JsonParser();
-        JsonElement tree = parser.parse(data);
-        JsonObject array = tree.getAsJsonObject();
+        boolean lativo = true;
 
-        ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(array);
+        ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(lativo);
 
         writer.println("=-=-=-=-=-=-=-=-PRODUTOS ATIVOS=-=-=-=-=-=-=-=-");
         for (Product arrayRe : arrayRes) {
