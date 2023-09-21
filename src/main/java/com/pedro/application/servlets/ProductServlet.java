@@ -21,8 +21,8 @@ public class ProductServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String parameter = req.getParameter("hash");
+        int id = Integer.parseInt(parameter);
 
         Product product = productService.findProduto(id);
 
@@ -44,8 +44,8 @@ public class ProductServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
 
-        String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String parameter = req.getParameter("hash");
+        int id = Integer.parseInt(parameter);
 
         PrintWriter writer = resp.getWriter();
         BufferedReader data = req.getReader();
@@ -66,8 +66,8 @@ public class ProductServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String parameter = req.getParameter("hash");
+        int id = Integer.parseInt(parameter);
 
         String confirmacao;
         confirmacao = productService.excluirProduto(id);
