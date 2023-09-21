@@ -248,5 +248,40 @@ public class ProductDAO {
         }
         return listaProdutos;
     }
+
+    public ArrayList filtrarProdutosQntMenorMin(){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        ArrayList<Product> listaProdutos = new ArrayList();
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "select * from produtos where quantidade<estoque_min";
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            while(rs.next()){
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String ean13 = rs.getString("ean13");
+                float preco = rs.getFloat("preco");
+                int quantidade = rs.getInt("quantidade");
+                int estoque_min = rs.getInt("estoque_min");
+
+                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
+
+                listaProdutos.add(product);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaProdutos;
+    }
 }
 

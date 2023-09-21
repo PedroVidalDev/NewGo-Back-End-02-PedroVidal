@@ -23,10 +23,10 @@ public class ProductsConsultarLativoFalse extends HttpServlet {
         ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(lativo);
 
         writer.println("=-=-=-=-=-=-=-=-PRODUTOS INATIVOS=-=-=-=-=-=-=-=-");
-        for (Product arrayRe : arrayRes) {
-            writer.println("Nome: " + arrayRe.getNome());
-            writer.println("Descricao: " + arrayRe.getDescricao());
-            writer.println("Ean13: " + arrayRe.getEan13());
+        for (Product product : arrayRes) {
+            writer.println("Nome: " + product.getNome());
+            writer.println("Descricao: " + product.getDescricao());
+            writer.println("Ean13: " + product.getEan13());
             writer.println("------------------------");
         }
 
