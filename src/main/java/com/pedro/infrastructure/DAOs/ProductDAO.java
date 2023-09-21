@@ -272,7 +272,7 @@ public class ProductDAO {
                 int quantidade = rs.getInt("quantidade");
                 int estoque_min = rs.getInt("estoque_min");
 
-                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
+                Product product = new Product(nome, descricao, ean13, preco, quantidade, estoque_min);
 
                 listaProdutos.add(product);
             }
