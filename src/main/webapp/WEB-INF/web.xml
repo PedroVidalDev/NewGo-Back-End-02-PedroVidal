@@ -27,7 +27,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductServlet </servlet-name>
-    <url-pattern> /product </url-pattern>
+    <url-pattern> /products/* </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -37,7 +37,28 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductServletLativo </servlet-name>
-    <url-pattern> /product/lativoAlterar </url-pattern>
+    <url-pattern> /products/lativoAlterar/* </url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name> ProductsConsultarServletLativo </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrue</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> ProductsConsultarServletLativo </servlet-name>
+    <url-pattern> /products/lativoTrue </url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrueOne</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
+    <url-pattern> /products/lativoTrueOne/* </url-pattern>
+  </servlet-mapping>
+
 
 </web-app>

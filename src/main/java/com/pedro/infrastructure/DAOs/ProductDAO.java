@@ -1,13 +1,13 @@
 package com.pedro.infrastructure.DAOs;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.pedro.infrastructure.entities.Product;
+import org.postgresql.jdbc2.ArrayAssistant;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductDAO {
@@ -197,18 +197,56 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "select l_ativo from produtos where id =?";
+            String productSelect = "select * from produtos where id =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
             preparedStatementNome.setInt(1, id);
             ResultSet rs = preparedStatementNome.executeQuery();
 
-            lativo = rs.getBoolean("l_ativo");
+            if(rs.next()) {
+                lativo = rs.getBoolean("l_ativo");
+            }
 
         } catch (Exception e){
             e.printStackTrace();
         }
 
         return lativo;
+    }
+
+    public ArrayList filtrarProdutosLativo(boolean lativo){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        ArrayList<Product> listaProdutos = new ArrayList();
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "select * from produtos where l_ativo =?";
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            preparedStatementNome.setBoolean(1, lativo);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            while(rs.next()){
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String ean13 = rs.getString("ean13");
+                float preco = rs.getFloat("preco");
+                int quantidade = rs.getInt("quantidade");
+                int estoque_min = rs.getInt("estoque_min");
+
+                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
+
+                listaProdutos.add(product);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaProdutos;
     }
 }
 

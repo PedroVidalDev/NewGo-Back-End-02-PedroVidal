@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pedro.domain.ProductService;
+import com.pedro.infrastructure.entities.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,27 +13,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
-public class LativoServlet extends HttpServlet {
+public class ProductsConsultarLativoTrue extends HttpServlet {
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
 
         PrintWriter writer = resp.getWriter();
-
         BufferedReader data = req.getReader();
-
-        String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
 
         JsonParser parser = new JsonParser();
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        String confirmacao;
-        confirmacao = productService.alterarLativo(id, array);
+        ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(array);
 
-        writer.println(confirmacao);
+        writer.println("=-=-=-=-=-=-=-=-PRODUTOS ATIVOS=-=-=-=-=-=-=-=-");
+        for (Product arrayRe : arrayRes) {
+            writer.println("Nome: " + arrayRe.getNome());
+            writer.println("Descricao: " + arrayRe.getDescricao());
+            writer.println("Ean13: " + arrayRe.getEan13());
+            writer.println("------------------------");
+        }
+
         writer.flush();
     }
 }

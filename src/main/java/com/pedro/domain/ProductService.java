@@ -6,7 +6,6 @@ import com.pedro.infrastructure.entities.Product;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class ProductService {
 
@@ -171,5 +170,20 @@ public class ProductService {
 
         boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(id);
         return lativo_antigo;
+    }
+
+    public ArrayList filtrarProdutosPorLativo(JsonObject info){
+        ProductDAO ProductCRUD = new ProductDAO();
+
+        boolean lativo;
+
+        try {
+            lativo = info.get("lativo").getAsBoolean();
+
+        } catch (NullPointerException e) {
+            return null;
+        }
+
+        return ProductCRUD.filtrarProdutosLativo(lativo);
     }
 }
