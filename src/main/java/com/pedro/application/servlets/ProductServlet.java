@@ -1,5 +1,6 @@
 package com.pedro.application.servlets;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,24 +19,19 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
-
         PrintWriter writer = resp.getWriter();
 
-        String parameter = req.getParameter("hash");
-        int id = Integer.parseInt(parameter);
+        String[] pathInfo = req.getPathInfo().split("/");
+        int id = Integer.parseInt(pathInfo[1]);
+
+        JsonObject res = new JsonObject();
 
         Product product = productService.findProduto(id);
 
         if(product == null){
             writer.println("Produto nao encontrado");
         } else{
-            writer.println("=-=-=-=-= Informacoes do produto =-=-=-=-=-");
-            writer.println("Nome: " + product.getNome());
-            writer.println("Descricao: " + product.getDescricao());
-            writer.println("Codigo de barras: " + product.getEan13());
-            writer.println("Preco: R$ " + product.getPreco());
-            writer.println("Quantidade em estoque: " + product.getQuantidade());
-            writer.println("Estoque minimo: " + product.getEstoquemin());
+            writer.println(product);
         }
         writer.flush();
     }
@@ -44,8 +40,8 @@ public class ProductServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
 
-        String parameter = req.getParameter("hash");
-        int id = Integer.parseInt(parameter);
+        String[] pathInfo = req.getPathInfo().split("/");
+        int id = Integer.parseInt(pathInfo[1]);
 
         PrintWriter writer = resp.getWriter();
         BufferedReader data = req.getReader();
@@ -66,8 +62,8 @@ public class ProductServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        String parameter = req.getParameter("hash");
-        int id = Integer.parseInt(parameter);
+        String[] pathInfo = req.getPathInfo().split("/");
+        int id = Integer.parseInt(pathInfo[1]);
 
         String confirmacao;
         confirmacao = productService.excluirProduto(id);
