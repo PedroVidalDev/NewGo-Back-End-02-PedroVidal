@@ -21,12 +21,12 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   </servlet-mapping>
 
   <servlet>
-    <servlet-name> ProductServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductServlet</servlet-class>
+    <servlet-name> ProductOneServlet </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductOneServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> ProductServlet </servlet-name>
+    <servlet-name> ProductOneServlet </servlet-name>
     <url-pattern> /products/* </url-pattern>
   </servlet-mapping>
 
