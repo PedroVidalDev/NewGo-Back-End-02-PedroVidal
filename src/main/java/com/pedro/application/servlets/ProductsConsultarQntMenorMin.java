@@ -1,5 +1,6 @@
 package com.pedro.application.servlets;
 
+import com.google.gson.JsonArray;
 import com.pedro.domain.ProductService;
 import com.pedro.infrastructure.entities.Product;
 
@@ -18,18 +19,9 @@ public class ProductsConsultarQntMenorMin extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        ArrayList<Product> arrayRes = productService.filtrarProdutosComQntAbaixo();
+        JsonArray res = productService.filtrarProdutosComQntAbaixo();
 
-        writer.println("=-=-=-=-=-Produtos com qnt. abaixo do estoque minimo=-=-=-=-=-=-=");
-
-        for(Product product : arrayRes){
-            writer.println("Nome: " + product.getNome());
-            writer.println("Descricao: " + product.getDescricao());
-            writer.println("Ean13: " + product.getEan13());
-            writer.println("Quantidade: " + product.getQuantidade());
-            writer.println("Estoque minimo: " + product.getEstoquemin());
-            writer.println("------------------------");
-        }
+        writer.println(res);
 
         writer.flush();
     }

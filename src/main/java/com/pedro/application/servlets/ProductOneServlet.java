@@ -1,11 +1,7 @@
 package com.pedro.application.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.pedro.domain.ProductService;
-import com.pedro.infrastructure.entities.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,24 +11,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ProductServlet extends HttpServlet {
+public class ProductOneServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
+
         PrintWriter writer = resp.getWriter();
 
         String[] pathInfo = req.getPathInfo().split("/");
         int id = Integer.parseInt(pathInfo[1]);
 
-        JsonObject res = new JsonObject();
+        JsonObject res = productService.findProduto(id);
 
-        Product product = productService.findProduto(id);
+        writer.println(res);
 
-        if(product == null){
-            writer.println("Produto nao encontrado");
-        } else{
-            writer.println(product);
-        }
         writer.flush();
     }
 
@@ -50,9 +42,9 @@ public class ProductServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        String confirmacao = productService.editarProduto(id, array);
+        JsonObject res = productService.editarProduto(id, array);
 
-        writer.print(confirmacao);
+        writer.print(res);
         writer.flush();
     }
 
@@ -65,10 +57,10 @@ public class ProductServlet extends HttpServlet {
         String[] pathInfo = req.getPathInfo().split("/");
         int id = Integer.parseInt(pathInfo[1]);
 
-        String confirmacao;
-        confirmacao = productService.excluirProduto(id);
+        JsonObject res = productService.excluirProduto(id);
 
-        writer.println(confirmacao);
+        writer.println(res);
+
         writer.flush();
     }
 
