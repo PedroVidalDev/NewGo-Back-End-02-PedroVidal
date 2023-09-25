@@ -26,20 +26,10 @@ public class ProductsConsultarLativoTrueOne extends HttpServlet {
         String[] pathInfo = req.getPathInfo().split("/");
         int id = Integer.parseInt(pathInfo[1]);
 
-        Product product = productService.findProduto(id);
-        boolean lativo = productService.checkLativoBefore(id);
+        JsonObject res = productService.findProduto(id);
 
-        // ADICIONAR CONDICIONAL DO PRODUTO EXISTIR AQUI (POR ALGUM MOTIVO ESSA CONDICIONA TA DANDO ERRADO)
-        if(lativo == false || product == null){
-            writer.println("Produto inativo ou nao encontrado...");
-        }
-        else {
-            writer.println("=-=-=-=-=-=-=-PRODUTO=-=-=-=-=-=-=-=-");
-            writer.println("Nome: " + product.getNome());
-            writer.println("Descricao: " + product.getDescricao());
-            writer.println("Ean13: " + product.getEan13());
-            writer.println("------------------------");
-        }
+        writer.println(res);
+
         writer.flush();
     }
 }

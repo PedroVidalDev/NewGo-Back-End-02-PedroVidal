@@ -1,5 +1,7 @@
 package com.pedro.application.servlets;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.pedro.domain.ProductService;
 import com.pedro.infrastructure.entities.Product;
 
@@ -20,15 +22,9 @@ public class ProductsConsultarLativoFalse extends HttpServlet {
 
         boolean lativo = false;
 
-        ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(lativo);
+        JsonArray res = productService.filtrarProdutosPorLativo(lativo);
 
-        writer.println("=-=-=-=-=-=-=-=-PRODUTOS INATIVOS=-=-=-=-=-=-=-=-");
-        for (Product product : arrayRes) {
-            writer.println("Nome: " + product.getNome());
-            writer.println("Descricao: " + product.getDescricao());
-            writer.println("Ean13: " + product.getEan13());
-            writer.println("------------------------");
-        }
+        writer.println(res);
 
         writer.flush();
     }

@@ -26,11 +26,11 @@ public class ProductsServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        String confirmacao;
+        JsonObject res;
 
-        confirmacao = productService.criarProduto(array);
+        res = productService.criarProduto(array);
 
-        writer.print(confirmacao);
+        writer.print(res);
         writer.flush();
     }
 

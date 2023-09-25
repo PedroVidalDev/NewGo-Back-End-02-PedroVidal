@@ -21,12 +21,12 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   </servlet-mapping>
 
   <servlet>
-    <servlet-name> ProductServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductServlet</servlet-class>
+    <servlet-name> ProductOneServlet </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductOneServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> ProductServlet </servlet-name>
+    <servlet-name> ProductOneServlet </servlet-name>
     <url-pattern> /products/* </url-pattern>
   </servlet-mapping>
 
@@ -37,7 +37,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductServletLativo </servlet-name>
-    <url-pattern> /products/lativoAlterar/* </url-pattern>
+    <url-pattern> /lativoAlterar/products/* </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -47,7 +47,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductsConsultarServletLativoTrue </servlet-name>
-    <url-pattern> /products/lativoTrue </url-pattern>
+    <url-pattern> /lativoTrue/products </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -57,7 +57,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductsConsultarServletLativoFalse </servlet-name>
-    <url-pattern> /products/lativoFalse </url-pattern>
+    <url-pattern> /lativoFalse/products </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -67,7 +67,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
-    <url-pattern> /products/lativoTrueOne/* </url-pattern>
+    <url-pattern> /lativoTrueOne/products/* </url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -77,7 +77,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
   <servlet-mapping>
     <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
-    <url-pattern> /products/consultarQntMenorMin </url-pattern>
+    <url-pattern> /consultarQntMenorMin/products </url-pattern>
   </servlet-mapping>
 
 </web-app>

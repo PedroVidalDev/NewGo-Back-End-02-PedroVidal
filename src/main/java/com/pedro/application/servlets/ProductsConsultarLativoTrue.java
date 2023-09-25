@@ -1,5 +1,6 @@
 package com.pedro.application.servlets;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,15 +25,9 @@ public class ProductsConsultarLativoTrue extends HttpServlet {
 
         boolean lativo = true;
 
-        ArrayList<Product> arrayRes = productService.filtrarProdutosPorLativo(lativo);
+        JsonArray res = productService.filtrarProdutosPorLativo(lativo);
 
-        writer.println("=-=-=-=-=-=-=-=-PRODUTOS ATIVOS=-=-=-=-=-=-=-=-");
-        for (Product product : arrayRes) {
-            writer.println("Nome: " + product.getNome());
-            writer.println("Descricao: " + product.getDescricao());
-            writer.println("Ean13: " + product.getEan13());
-            writer.println("------------------------");
-        }
+        writer.println(res);
 
         writer.flush();
     }

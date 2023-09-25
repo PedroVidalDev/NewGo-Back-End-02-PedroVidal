@@ -29,10 +29,10 @@ public class LativoServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        String confirmacao;
-        confirmacao = productService.alterarLativo(id, array);
+        JsonObject res = productService.alterarLativo(id, array);
 
-        writer.println(confirmacao);
+        writer.println(res);
+
         writer.flush();
     }
 }

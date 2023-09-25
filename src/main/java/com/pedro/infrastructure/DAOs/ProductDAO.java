@@ -3,12 +3,14 @@ package com.pedro.infrastructure.DAOs;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.pedro.application.DTOs.ProductInput;
 import com.pedro.infrastructure.entities.Product;
 import org.postgresql.jdbc2.ArrayAssistant;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ProductDAO {
     private String url;
@@ -18,7 +20,7 @@ public class ProductDAO {
 
     private Connection con;
 
-    public void create(Product product){
+    public void create(ProductInput product){
 
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
@@ -95,14 +97,19 @@ public class ProductDAO {
             ResultSet rs = preparedStatementNome.executeQuery();
 
             if(rs.next()){
+                UUID hash = UUID.fromString(rs.getString("hash"));
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 String ean13 = rs.getString("ean13");
                 float preco = rs.getFloat("preco");
                 int quantidade = rs.getInt("quantidade");
                 int estoque_min = rs.getInt("estoque_min");
+                Timestamp dtcreate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtupdate");
+                boolean lativo = rs.getBoolean("l_ativo");
 
-                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
+
+                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
 
                 return product;
             }
@@ -230,14 +237,18 @@ public class ProductDAO {
             ResultSet rs = preparedStatementNome.executeQuery();
 
             while(rs.next()){
+                int id = rs.getInt("id");
+                UUID hash = UUID.fromString(rs.getString("hash"));
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 String ean13 = rs.getString("ean13");
                 float preco = rs.getFloat("preco");
                 int quantidade = rs.getInt("quantidade");
                 int estoque_min = rs.getInt("estoque_min");
+                Timestamp dtcreate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtupdate");
 
-                Product product = new Product(nome, descricao, ean13, preco, estoque_min, quantidade);
+                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
 
                 listaProdutos.add(product);
             }
@@ -265,14 +276,18 @@ public class ProductDAO {
             ResultSet rs = preparedStatementNome.executeQuery();
 
             while(rs.next()){
+                int id = rs.getInt("id");
+                UUID hash = UUID.fromString(rs.getString("hash"));
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 String ean13 = rs.getString("ean13");
                 float preco = rs.getFloat("preco");
                 int quantidade = rs.getInt("quantidade");
                 int estoque_min = rs.getInt("estoque_min");
+                Timestamp dtcreate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtcreate");
 
-                Product product = new Product(nome, descricao, ean13, preco, quantidade, estoque_min);
+                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, true);
 
                 listaProdutos.add(product);
             }
