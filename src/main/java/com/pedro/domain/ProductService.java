@@ -251,12 +251,17 @@ public class ProductService {
         return lativo_antigo;
     }
 
-    public JsonArray filtrarProdutosPorLativo(boolean lativo){
+    public JsonArray filtrarProdutosPorLativo(String lativo){
         ProductDAO ProductCRUD = new ProductDAO();
 
         Gson gson = new Gson();
 
-        ArrayList<Product> listProducts = ProductCRUD.filtrarProdutosLativo(lativo);
+        JsonArray res = new JsonArray();
+
+        boolean lativoBool;
+        lativoBool = Boolean.parseBoolean(lativo);
+
+        ArrayList<Product> listProducts = ProductCRUD.filtrarProdutosLativo(lativoBool);
 
         ArrayList<ProductOutput> listDTO = new ArrayList<ProductOutput>();
 
@@ -264,9 +269,9 @@ public class ProductService {
             listDTO.add(productToOutput(product));
         }
 
-        JsonArray listJson = parseJsonArray(gson.toJson(listDTO));
+        res = parseJsonArray(gson.toJson(listDTO));
 
-        return listJson;
+        return res;
     }
 
     public JsonArray filtrarProdutosComQntAbaixo(){
