@@ -1,5 +1,6 @@
 package com.pedro.infrastructure.entities;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -16,12 +17,17 @@ public class Product {
     private Timestamp dtupdate;
     private boolean lativo;
 
-    public Product (String nome,
+    public Product (int id,
+                    UUID hash,
+                    String nome,
                     String descricao,
                     String ean13,
                     float preco,
                     int quantidade,
-                    int estoque_min
+                    int estoque_min,
+                    Timestamp dtcreate,
+                    Timestamp dtupdate,
+                    boolean lativo
                     ){
         this.id = id;
         this.hash = hash;
@@ -39,10 +45,7 @@ public class Product {
     public int getId(){
         return id;
     }
-
-    public UUID getHash(){
-        return hash;
-    }
+    public UUID getHash(){ return hash; }
 
     public String getNome(){
         return nome;
@@ -67,15 +70,12 @@ public class Product {
     public int getEstoquemin(){
         return estoque_min;
     }
-
     public Timestamp getDtcreate(){
         return dtcreate;
     }
-
     public Timestamp getDtupdate(){
         return dtupdate;
     }
-
     public boolean getLativo(){
         return lativo;
     }
