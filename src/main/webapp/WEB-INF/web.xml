@@ -41,23 +41,13 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   </servlet-mapping>
 
   <servlet>
-    <servlet-name> ProductsConsultarServletLativoTrue </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrue</servlet-class>
+    <servlet-name> ProductsConsultarServletLativo </servlet-name>
+    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativo</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name> ProductsConsultarServletLativoTrue </servlet-name>
-    <url-pattern> /lativoTrue/products </url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name> ProductsConsultarServletLativoFalse </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoFalse</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name> ProductsConsultarServletLativoFalse </servlet-name>
-    <url-pattern> /lativoFalse/products </url-pattern>
+    <servlet-name> ProductsConsultarServletLativo </servlet-name>
+    <url-pattern> /lativo/products </url-pattern>
   </servlet-mapping>
 
   <servlet>
