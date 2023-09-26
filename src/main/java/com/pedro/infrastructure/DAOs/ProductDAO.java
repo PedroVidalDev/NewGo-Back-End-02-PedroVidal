@@ -81,7 +81,7 @@ public class ProductDAO {
         return false;
     }
 
-    public Product consultar(int id){
+    public Product consultar(String hash){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -91,13 +91,13 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "select * from produtos where id =?";
+            String productSelect = "select * from produtos where hash =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            preparedStatementNome.setInt(1, id);
+            preparedStatementNome.setObject(1, UUID.fromString(hash));
             ResultSet rs = preparedStatementNome.executeQuery();
 
             if(rs.next()){
-                UUID hash = UUID.fromString(rs.getString("hash"));
+                int id = rs.getInt("id");
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 String ean13 = rs.getString("ean13");
@@ -108,8 +108,7 @@ public class ProductDAO {
                 Timestamp dtupdate = rs.getTimestamp("dtupdate");
                 boolean lativo = rs.getBoolean("l_ativo");
 
-
-                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
+                Product product = new Product(id, UUID.fromString(hash), nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
 
                 return product;
             }
@@ -120,7 +119,7 @@ public class ProductDAO {
         return null;
     }
 
-    public void deletar(int id){
+    public void deletar(String hash){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -132,9 +131,9 @@ public class ProductDAO {
 
             int affectedRows = 0;
 
-            String productSelect = "delete from produtos where id =?";
+            String productSelect = "delete from produtos where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, UUID.fromString(hash));
             preparedStatement.executeUpdate();
 
         } catch (Exception e){
@@ -142,7 +141,7 @@ public class ProductDAO {
         }
     }
 
-    public void LativoAlterar(int id, boolean lativo){
+    public void LativoAlterar(String hash, boolean lativo){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -152,11 +151,11 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "update produtos set l_ativo =?, dtupdate=? where id =?";
+            String productSelect = "update produtos set l_ativo =?, dtupdate=? where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setBoolean(1, lativo);
             preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            preparedStatement.setInt(3, id);
+            preparedStatement.setObject(3, UUID.fromString(hash));
 
             preparedStatement.executeUpdate();
 
@@ -165,7 +164,7 @@ public class ProductDAO {
         }
     }
 
-    public void alterar(int id, Product product){
+    public void alterar(String hash, Product product){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -175,14 +174,14 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "update produtos set descricao=?, preco=?, quantidade=?, estoque_min=?, dtupdate=?, l_ativo=true where id =?";
+            String productSelect = "update produtos set descricao=?, preco=?, quantidade=?, estoque_min=?, dtupdate=?, l_ativo=true where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setString(1, product.getDescricao());
             preparedStatement.setFloat(2, product.getPreco());
             preparedStatement.setInt(3, product.getQuantidade());
             preparedStatement.setInt(4, product.getEstoquemin());
             preparedStatement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-            preparedStatement.setInt(6, id);
+            preparedStatement.setObject(6, UUID.fromString(hash));
 
             preparedStatement.executeUpdate();
 
@@ -191,7 +190,7 @@ public class ProductDAO {
         }
     }
 
-    public boolean consultarLativoAntigo(int id){
+    public boolean consultarLativoAntigo(String hash){
         url="jdbc:postgresql://localhost:5432/newgo";
         usuario="postgres";
         senha="root";
@@ -203,9 +202,9 @@ public class ProductDAO {
             con = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conexao realizada!!!");
 
-            String productSelect = "select * from produtos where id =?";
+            String productSelect = "select * from produtos where hash =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            preparedStatementNome.setInt(1, id);
+            preparedStatementNome.setObject(1, UUID.fromString(hash));
             ResultSet rs = preparedStatementNome.executeQuery();
 
             if(rs.next()) {

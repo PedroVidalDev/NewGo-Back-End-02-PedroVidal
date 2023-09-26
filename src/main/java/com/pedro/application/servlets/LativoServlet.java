@@ -23,13 +23,13 @@ public class LativoServlet extends HttpServlet {
         BufferedReader data = req.getReader();
 
         String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String hash = pathInfo[1];
 
         JsonParser parser = new JsonParser();
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        JsonObject res = productService.alterarLativo(id, array);
+        JsonObject res = productService.alterarLativo(hash, array);
 
         writer.println(res);
 

@@ -90,13 +90,13 @@ public class ProductService {
 
     }
 
-    public JsonObject findProduto(int id) {
+    public JsonObject findProduto(String hash) {
         Gson gson = new Gson();
 
         ProductDAO ProductCRUD = new ProductDAO();
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(id);
+        Product product = ProductCRUD.consultar(hash);
 
         if(product == null){
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -108,7 +108,7 @@ public class ProductService {
         return res;
     }
 
-    public JsonObject editarProduto(int id, JsonObject info) {
+    public JsonObject editarProduto(String hash, JsonObject info) {
         float preco;
         String descricao;
         int quantidade;
@@ -133,7 +133,7 @@ public class ProductService {
             return res;
         }
 
-        Product product_old = ProductCRUD.consultar(id);
+        Product product_old = ProductCRUD.consultar(hash);
 
         if (product_old == null) {
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -154,7 +154,7 @@ public class ProductService {
                 product_old.getLativo()
         );
 
-        boolean lativo_antigo = checkLativoBefore(id);
+        boolean lativo_antigo = checkLativoBefore(hash);
 
         if(product_old.equals(product)){
             res.addProperty("mensagem", "Nenhuma alteracao foi feita no produto.");
@@ -188,20 +188,20 @@ public class ProductService {
                 return res;
             }
 
-            ProductCRUD.alterar(id, product);
-            ProductOutput finalProduct = productToOutput(ProductCRUD.consultar(id));
+            ProductCRUD.alterar(hash, product);
+            ProductOutput finalProduct = productToOutput(ProductCRUD.consultar(hash));
 
             res = parseJsonObject(gson.toJson(finalProduct));
             return res;
         }
     }
 
-    public JsonObject excluirProduto(int id) {
+    public JsonObject excluirProduto(String hash) {
         ProductDAO ProductCRUD = new ProductDAO();
 
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(id);
+        Product product = ProductCRUD.consultar(hash);
 
         ProductOutput productOutput = productToOutput(product);
 
@@ -209,13 +209,13 @@ public class ProductService {
             res.addProperty("mensagem", "Produto nao encontrado.");
             return res;
         } else {
-            ProductCRUD.deletar(id);
+            ProductCRUD.deletar(hash);
         }
         res.addProperty("mensagem", "Produto deletado.");
         return res;
     }
 
-    public JsonObject alterarLativo(int id, JsonObject info){
+    public JsonObject alterarLativo(String hash, JsonObject info){
         ProductDAO ProductCRUD = new ProductDAO();
 
         Gson gson = new Gson();
@@ -231,23 +231,23 @@ public class ProductService {
             return res;
         }
 
-        Product produto = ProductCRUD.consultar(id);
+        Product produto = ProductCRUD.consultar(hash);
 
         if(produto == null){
             res.addProperty("mensagem", "Produto nao encontrado.");
             return res;
         } else{
-            ProductCRUD.LativoAlterar(id, lativo);
+            ProductCRUD.LativoAlterar(hash, lativo);
 
-            res = parseJsonObject(gson.toJson(ProductCRUD.consultar(id)));
+            res = parseJsonObject(gson.toJson(ProductCRUD.consultar(hash)));
             return res;
         }
     }
 
-    public boolean checkLativoBefore(int id){
+    public boolean checkLativoBefore(String hash){
         ProductDAO ProductCRUD = new ProductDAO();
 
-        boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(id);
+        boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(hash);
         return lativo_antigo;
     }
 
