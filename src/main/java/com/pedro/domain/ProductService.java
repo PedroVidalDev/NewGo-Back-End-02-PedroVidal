@@ -7,6 +7,7 @@ import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ProductService {
 
@@ -83,9 +84,24 @@ public class ProductService {
 
         ProductInput productInput = new ProductInput(nome, descricao, ean13, preco, quantidade, min_quantidade);
 
-        ProductCRUD.create(productInput);
+        Product product = new Product(
+                0,
+                UUID.randomUUID(),
+                productInput.getNome(),
+                productInput.getDescricao(),
+                productInput.getEan13(),
+                productInput.getPreco(),
+                productInput.getQuantidade(),
+                productInput.getEstoquemin(),
+                null,
+                null,
+                false
+        );
 
-        array.addProperty("mensagem", "Produto criado.");
+        ProductOutput productOutput = productToOutput(ProductCRUD.create(product));
+
+        array = parseJsonObject(gson.toJson(productOutput));
+
         return array;
 
     }
@@ -96,7 +112,7 @@ public class ProductService {
         ProductDAO ProductCRUD = new ProductDAO();
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(hash);
+        Product product = ProductCRUD.consultar(UUID.fromString(hash));
 
         if(product == null){
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -133,7 +149,7 @@ public class ProductService {
             return res;
         }
 
-        Product product_old = ProductCRUD.consultar(hash);
+        Product product_old = ProductCRUD.consultar(UUID.fromString(hash));
 
         if (product_old == null) {
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -188,8 +204,8 @@ public class ProductService {
                 return res;
             }
 
-            ProductCRUD.alterar(hash, product);
-            ProductOutput finalProduct = productToOutput(ProductCRUD.consultar(hash));
+            ProductCRUD.alterar(UUID.fromString(hash), product);
+            ProductOutput finalProduct = productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
 
             res = parseJsonObject(gson.toJson(finalProduct));
             return res;
@@ -201,7 +217,7 @@ public class ProductService {
 
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(hash);
+        Product product = ProductCRUD.consultar(UUID.fromString(hash));
 
         ProductOutput productOutput = productToOutput(product);
 
@@ -231,7 +247,7 @@ public class ProductService {
             return res;
         }
 
-        Product produto = ProductCRUD.consultar(hash);
+        Product produto = ProductCRUD.consultar(UUID.fromString(hash));
 
         if(produto == null){
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -239,7 +255,7 @@ public class ProductService {
         } else{
             ProductCRUD.LativoAlterar(hash, lativo);
 
-            res = parseJsonObject(gson.toJson(ProductCRUD.consultar(hash)));
+            res = parseJsonObject(gson.toJson(ProductCRUD.consultar(UUID.fromString(hash))));
             return res;
         }
     }
@@ -247,7 +263,7 @@ public class ProductService {
     public boolean checkLativoBefore(String hash){
         ProductDAO ProductCRUD = new ProductDAO();
 
-        boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(hash);
+        boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(UUID.fromString(hash));
         return lativo_antigo;
     }
 
