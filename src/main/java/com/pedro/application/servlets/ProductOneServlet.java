@@ -19,9 +19,9 @@ public class ProductOneServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String hash = pathInfo[1];
 
-        JsonObject res = productService.findProduto(id);
+        JsonObject res = productService.findProduto(hash);
 
         writer.println(res);
 
@@ -33,7 +33,7 @@ public class ProductOneServlet extends HttpServlet {
         ProductService productService = new ProductService();
 
         String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String hash = pathInfo[1];
 
         PrintWriter writer = resp.getWriter();
         BufferedReader data = req.getReader();
@@ -42,7 +42,7 @@ public class ProductOneServlet extends HttpServlet {
         JsonElement tree = parser.parse(data);
         JsonObject array = tree.getAsJsonObject();
 
-        JsonObject res = productService.editarProduto(id, array);
+        JsonObject res = productService.editarProduto(hash, array);
 
         writer.print(res);
         writer.flush();
@@ -55,9 +55,9 @@ public class ProductOneServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String hash = pathInfo[1];
 
-        JsonObject res = productService.excluirProduto(id);
+        JsonObject res = productService.excluirProduto(hash);
 
         writer.println(res);
 

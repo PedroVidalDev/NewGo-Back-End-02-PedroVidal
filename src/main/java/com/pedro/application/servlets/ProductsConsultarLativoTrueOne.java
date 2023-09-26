@@ -24,9 +24,9 @@ public class ProductsConsultarLativoTrueOne extends HttpServlet {
         BufferedReader data = req.getReader();
 
         String[] pathInfo = req.getPathInfo().split("/");
-        int id = Integer.parseInt(pathInfo[1]);
+        String hash = pathInfo[1];
 
-        JsonObject res = productService.findProduto(id);
+        JsonObject res = productService.findProduto(hash);
 
         writer.println(res);
 
