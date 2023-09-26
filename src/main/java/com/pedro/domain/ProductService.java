@@ -6,12 +6,12 @@ import com.pedro.application.DTOs.ProductOutput;
 import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
 
+import javax.swing.text.AttributeSet;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class ProductService {
 
-    // FUNCOES RELACIONADAS AO CRUD //
     public JsonObject criarProduto(JsonObject produto) {
         ProductDAO ProductCRUD = new ProductDAO();
         Gson gson = new Gson();
@@ -305,6 +305,19 @@ public class ProductService {
         JsonArray listJson = parseJsonArray(gson.toJson(listDTO));
 
         return listJson;
+    }
+
+    public JsonArray criarProdutosLote(JsonArray array){
+
+        JsonObject res = new JsonObject();
+        JsonArray resArray = new JsonArray();
+
+        for (JsonElement element : array) {
+            res = criarProduto(element.getAsJsonObject());
+            resArray.add(res);
+        }
+        return resArray;
+
     }
 
     public ProductOutput productToOutput(Product product){
