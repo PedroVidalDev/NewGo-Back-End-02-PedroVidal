@@ -10,64 +10,74 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-  <servlet>
-    <servlet-name> ProductsServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsServlet</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductsServlet </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductsServlet </servlet-name>
-    <url-pattern> /products </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductsServlet </servlet-name>
+        <url-pattern> /products </url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name> ProductOneServlet </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductOneServlet</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductOneServlet </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductOneServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductOneServlet </servlet-name>
-    <url-pattern> /products/* </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductOneServlet </servlet-name>
+        <url-pattern> /products/* </url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name> ProductServletLativo </servlet-name>
-    <servlet-class>com.pedro.application.servlets.LativoServlet</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductServletLativo </servlet-name>
+        <servlet-class>com.pedro.application.servlets.LativoServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductServletLativo </servlet-name>
-    <url-pattern> /lativoAlterar/products/* </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductServletLativo </servlet-name>
+        <url-pattern> /lativoAlterar/products/* </url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name> ProductsConsultarServletLativo </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativo</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductsConsultarServletLativo </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsConsultarLativo</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductsConsultarServletLativo </servlet-name>
-    <url-pattern> /lativo/products </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductsConsultarServletLativo </servlet-name>
+        <url-pattern> /lativo/products </url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrueOne</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrueOne</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
-    <url-pattern> /lativoTrueOne/products/* </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
+        <url-pattern> /lativoTrueOne/products/* </url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
-    <servlet-class>com.pedro.application.servlets.ProductsConsultarQntMenorMin</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsConsultarQntMenorMin</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
-    <url-pattern> /consultarQntMenorMin/products </url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
+        <url-pattern> /consultarQntMenorMin/products </url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name> ProductsCreateBatch </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsCreateBatch</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name> ProductsCreateBatch </servlet-name>
+        <url-pattern> /createBatch/products </url-pattern>
+    </servlet-mapping>
 
 </web-app>
