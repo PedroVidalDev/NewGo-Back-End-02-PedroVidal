@@ -80,4 +80,14 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
         <url-pattern> /createBatch/products </url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name> ProductsEditPriceBatch </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsEditPriceBatch</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name> ProductsEditPriceBatch </servlet-name>
+        <url-pattern> /updatePriceBatch/products </url-pattern>
+    </servlet-mapping>
+
 </web-app>
