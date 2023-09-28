@@ -5,6 +5,7 @@ import com.pedro.application.DTOs.ProductInput;
 import com.pedro.application.DTOs.ProductOutput;
 import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
 import javax.swing.text.AttributeSet;
 import java.util.ArrayList;
@@ -314,7 +315,15 @@ public class ProductService {
 
         for (JsonElement element : array) {
             res = criarProduto(element.getAsJsonObject());
-            resArray.add(res);
+
+            try{
+                JsonObject resErro = element.getAsJsonObject();
+                resErro.addProperty("aviso", res.get("mensagem").getAsString());
+                resArray.add(resErro);
+            } catch(NullPointerException e){
+                resArray.add(res);
+            }
+
         }
         return resArray;
 
