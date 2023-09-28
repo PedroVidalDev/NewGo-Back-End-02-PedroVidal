@@ -400,6 +400,40 @@ public class ProductService {
         return resArray;
     }
 
+    public JsonArray editarQntLote(JsonArray array){
+        ProductDAO ProductCRUD = new ProductDAO();
+
+        JsonArray resArray = new JsonArray();
+        JsonObject res = new JsonObject();
+
+        for (JsonElement element : array){
+            JsonObject elementObject = element.getAsJsonObject();
+            String hash = elementObject.get("hash").getAsString();
+            Float valor = elementObject.get("valor").getAsFloat();
+
+            res = findProduto(hash);
+
+            try{
+                JsonObject resErro = element.getAsJsonObject();
+                resErro.addProperty("aviso", res.get("mensagem").getAsString());
+                resArray.add(resErro);
+
+            } catch(NullPointerException e){
+                if((res.get("quantidade").getAsFloat() + valor) < 0){
+                    JsonObject resErro = element.getAsJsonObject();
+                    resErro.addProperty("aviso", "Quantidade nao pode resultar em algo menor que 0");
+                    resArray.add(resErro);
+                } else{
+                    Float valorFinal = res.get("quantidade").getAsFloat() + valor;
+                    ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
+                    res = findProduto(hash);
+                    resArray.add(res);
+                }
+            }
+        }
+        return resArray;
+    }
+
     public ProductOutput productToOutput(Product product){
         ProductOutput productOutput = new ProductOutput(
                 product.getId(),
