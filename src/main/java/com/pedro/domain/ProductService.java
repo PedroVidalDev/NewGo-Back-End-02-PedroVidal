@@ -113,7 +113,14 @@ public class ProductService {
         ProductDAO ProductCRUD = new ProductDAO();
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(UUID.fromString(hash));
+        Product product;
+
+        try {
+            product = ProductCRUD.consultar(UUID.fromString(hash));
+        } catch(Exception e){
+            res.addProperty("mensagem", "Hash invalida.");
+            return res;
+        }
 
         if(product == null){
             res.addProperty("mensagem", "Produto nao encontrado.");
@@ -122,6 +129,7 @@ public class ProductService {
 
             res = parseJsonObject(gson.toJson(productOutput));
         }
+
         return res;
     }
 
@@ -327,6 +335,69 @@ public class ProductService {
         }
         return resArray;
 
+    }
+
+    public JsonArray editarPrecoLote(JsonArray array){
+        ProductDAO ProductCRUD = new ProductDAO();
+
+        JsonArray resArray = new JsonArray();
+        JsonObject res = new JsonObject();
+
+        float finalValue;
+
+        for (JsonElement element : array){
+
+            JsonObject elementObject = element.getAsJsonObject();
+            Float valor = elementObject.get("valor").getAsFloat();
+            String operacao = elementObject.get("operacao").getAsString();
+            String hash = elementObject.get("hash").getAsString();
+
+            res = findProduto(hash);
+
+            try{
+                JsonObject resErro = element.getAsJsonObject();
+                resErro.addProperty("aviso", res.get("mensagem").getAsString());
+                resArray.add(resErro);
+
+            } catch(NullPointerException e){
+
+                if(operacao.equals("aumentar")){
+                    finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
+
+                    ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
+
+                    res = findProduto(hash);
+
+                    resArray.add(res);
+                }
+
+                else if(operacao.equals("diminuir")){
+
+                    if(valor > 100){
+                        JsonObject resErro = element.getAsJsonObject();
+                        resErro.addProperty("aviso", "Valor nao deve ser maior que 100");
+                        resArray.add(resErro);
+                    } else{
+                        finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
+
+                        ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
+
+                        res = findProduto(hash);
+
+                        resArray.add(res);
+                    }
+
+                }
+
+                else{
+                    JsonObject resErro = element.getAsJsonObject();
+                    resErro.addProperty("aviso", "Operacao invalida.");
+                    resArray.add(resErro);
+                }
+            }
+        }
+
+        return resArray;
     }
 
     public ProductOutput productToOutput(Product product){
