@@ -346,10 +346,13 @@ public class ProductService {
         float finalValue;
 
         for (JsonElement element : array){
-            res = findProduto(element.getAsJsonObject()
-                    .get("hash")
-                    .getAsString()
-            );
+
+            JsonObject elementObject = element.getAsJsonObject();
+            Float valor = elementObject.get("valor").getAsFloat();
+            String operacao = elementObject.get("operacao").getAsString();
+            String hash = elementObject.get("hash").getAsString();
+
+            res = findProduto(hash);
 
             try{
                 JsonObject resErro = element.getAsJsonObject();
@@ -358,34 +361,28 @@ public class ProductService {
 
             } catch(NullPointerException e){
 
-                if(element.getAsJsonObject().get("operacao").getAsString().equals("aumentar")){
-                    finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (element.getAsJsonObject().get("valor").getAsFloat() / 100));
+                if(operacao.equals("aumentar")){
+                    finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
 
-                    ProductCRUD.editPriceBatch(UUID.fromString(res.get("hash").getAsString()), finalValue);
+                    ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                    res = findProduto(element.getAsJsonObject()
-                            .get("hash")
-                            .getAsString()
-                    );
+                    res = findProduto(hash);
 
                     resArray.add(res);
                 }
 
-                else if(element.getAsJsonObject().get("operacao").getAsString().equals("diminuir")){
+                else if(operacao.equals("diminuir")){
 
-                    if(element.getAsJsonObject().get("valor").getAsFloat() > 100){
+                    if(valor > 100){
                         JsonObject resErro = element.getAsJsonObject();
                         resErro.addProperty("aviso", "Valor nao deve ser maior que 100");
                         resArray.add(resErro);
                     } else{
-                        finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (element.getAsJsonObject().get("valor").getAsFloat() / 100));
+                        finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
 
-                        ProductCRUD.editPriceBatch(UUID.fromString(res.get("hash").getAsString()), finalValue);
+                        ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                        res = findProduto(element.getAsJsonObject()
-                                .get("hash")
-                                .getAsString()
-                        );
+                        res = findProduto(hash);
 
                         resArray.add(res);
                     }
