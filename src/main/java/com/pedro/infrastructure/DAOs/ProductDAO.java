@@ -325,5 +325,28 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
+
+    public void editQntBatch(UUID hash, float value){
+        url="jdbc:postgresql://localhost:5432/newgo";
+        usuario="postgres";
+        senha="root";
+
+        try{
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexao realizada!!!");
+
+            String productSelect = "update produtos set quantidade=?, dtupdate=? where hash =?";
+            PreparedStatement preparedStatement = con.prepareStatement(productSelect);
+            preparedStatement.setFloat(1, value);
+            preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setObject(3, hash);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
 
