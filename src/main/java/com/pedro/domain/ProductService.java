@@ -16,6 +16,8 @@ public class ProductService {
 
     public JsonObject criarProduto(JsonObject produto) {
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
+
         ResourceBundle messages = ResourceBundle.getBundle("messages");
         Gson gson = new Gson();
 
@@ -101,7 +103,7 @@ public class ProductService {
                 false
         );
 
-        ProductOutput productOutput = productToOutput(ProductCRUD.create(product));
+        ProductOutput productOutput = productMapper.productToOutput(ProductCRUD.create(product));
 
         array = parseJsonObject(gson.toJson(productOutput));
 
@@ -114,6 +116,7 @@ public class ProductService {
         ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
         JsonObject res = new JsonObject();
 
         Product product;
@@ -128,7 +131,7 @@ public class ProductService {
         if(product == null){
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
         } else{
-            ProductOutput productOutput = productToOutput(product);
+            ProductOutput productOutput = productMapper.productToOutput(product);
 
             res = parseJsonObject(gson.toJson(productOutput));
         }
@@ -146,6 +149,7 @@ public class ProductService {
         boolean lativo;
 
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
 
         Gson gson = new Gson();
 
@@ -219,7 +223,7 @@ public class ProductService {
             }
 
             ProductCRUD.alterar(UUID.fromString(hash), product);
-            ProductOutput finalProduct = productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+            ProductOutput finalProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
 
             res = parseJsonObject(gson.toJson(finalProduct));
             return res;
@@ -228,13 +232,15 @@ public class ProductService {
 
     public JsonObject excluirProduto(String hash) {
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
+
         ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonObject res = new JsonObject();
 
         Product product = ProductCRUD.consultar(UUID.fromString(hash));
 
-        ProductOutput productOutput = productToOutput(product);
+        ProductOutput productOutput = productMapper.productToOutput(product);
 
         if (productOutput == null) {
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
@@ -285,6 +291,7 @@ public class ProductService {
 
     public JsonArray filtrarProdutosPorLativo(String lativo){
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
 
         Gson gson = new Gson();
 
@@ -298,7 +305,7 @@ public class ProductService {
         ArrayList<ProductOutput> listDTO = new ArrayList<ProductOutput>();
 
         for (Product product : listProducts){
-            listDTO.add(productToOutput(product));
+            listDTO.add(productMapper.productToOutput(product));
         }
 
         res = parseJsonArray(gson.toJson(listDTO));
@@ -308,6 +315,7 @@ public class ProductService {
 
     public JsonArray filtrarProdutosComQntAbaixo(){
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
 
         Gson gson = new Gson();
 
@@ -315,7 +323,7 @@ public class ProductService {
         ArrayList<ProductOutput> listDTO = new ArrayList<ProductOutput>();
 
         for (Product product : listProducts){
-            listDTO.add(productToOutput(product));
+            listDTO.add(productMapper.productToOutput(product));
         }
 
         JsonArray listJson = parseJsonArray(gson.toJson(listDTO));
@@ -441,24 +449,6 @@ public class ProductService {
             }
         }
         return resArray;
-    }
-
-    public ProductOutput productToOutput(Product product){
-        ProductOutput productOutput = new ProductOutput(
-                product.getId(),
-                product.getHash(),
-                product.getNome(),
-                product.getDescricao(),
-                product.getEan13(),
-                product.getPreco(),
-                product.getQuantidade(),
-                product.getEstoquemin(),
-                product.getDtcreate(),
-                product.getDtupdate(),
-                product.getLativo()
-        );
-
-        return productOutput;
     }
 
     public JsonObject parseJsonObject(String element){
