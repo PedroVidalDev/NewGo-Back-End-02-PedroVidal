@@ -377,24 +377,10 @@ public class ProductService {
 
             } catch(NullPointerException e){
 
-                if(operacao.equals("aumentar")){
-                    finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
+                if(res.get("lativo").getAsBoolean()){
 
-                    ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
-
-                    res = findProduto(hash);
-
-                    resArray.add(res);
-                }
-
-                else if(operacao.equals("diminuir")){
-
-                    if(valor > 100){
-                        JsonObject resErro = element.getAsJsonObject();
-                        resErro.addProperty("aviso", messages.getString("error.valueHigher100"));
-                        resArray.add(resErro);
-                    } else{
-                        finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
+                    if(operacao.equals("aumentar")){
+                        finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
 
                         ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
@@ -403,13 +389,36 @@ public class ProductService {
                         resArray.add(res);
                     }
 
-                }
+                    else if(operacao.equals("diminuir")){
 
-                else{
+                        if(valor > 100){
+                            JsonObject resErro = element.getAsJsonObject();
+                            resErro.addProperty("aviso", messages.getString("error.valueHigher100"));
+                            resArray.add(resErro);
+                        } else{
+                            finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
+
+                            ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
+
+                            res = findProduto(hash);
+
+                            resArray.add(res);
+                        }
+
+                    }
+
+                    else{
+                        JsonObject resErro = element.getAsJsonObject();
+                        resErro.addProperty("aviso", messages.getString("error.invalidOperation"));
+                        resArray.add(resErro);
+                    }
+
+                } else{
                     JsonObject resErro = element.getAsJsonObject();
-                    resErro.addProperty("aviso", messages.getString("error.invalidOperation"));
+                    resErro.addProperty("aviso", messages.getString("error.productInactive"));
                     resArray.add(resErro);
                 }
+
             }
         }
 
@@ -435,16 +444,25 @@ public class ProductService {
                 resErro.addProperty("aviso", res.get("mensagem").getAsString());
                 resArray.add(resErro);
 
-            } catch(NullPointerException e){
-                if((res.get("quantidade").getAsFloat() + valor) < 0){
-                    JsonObject resErro = element.getAsJsonObject();
-                    resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
-                    resArray.add(resErro);
+            } catch(NullPointerException e) {
+
+                if (res.get("lativo").getAsBoolean()) {
+
+                    if ((res.get("quantidade").getAsFloat() + valor) < 0) {
+                        JsonObject resErro = element.getAsJsonObject();
+                        resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
+                        resArray.add(resErro);
+                    } else {
+                        Float valorFinal = res.get("quantidade").getAsFloat() + valor;
+                        ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
+                        res = findProduto(hash);
+                        resArray.add(res);
+                    }
+
                 } else{
-                    Float valorFinal = res.get("quantidade").getAsFloat() + valor;
-                    ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
-                    res = findProduto(hash);
-                    resArray.add(res);
+                    JsonObject resErro = element.getAsJsonObject();
+                    resErro.addProperty("aviso", messages.getString("error.productInactive"));
+                    resArray.add(resErro);
                 }
             }
         }
