@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.pedro.application.DTOs.ProductInput;
+import com.pedro.infrastructure.DatabaseConnection;
 import com.pedro.infrastructure.entities.Product;
 import org.postgresql.jdbc2.ArrayAssistant;
 
@@ -22,14 +23,7 @@ public class ProductDAO {
 
     public Product create(Product product){
 
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
-
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String sql = "INSERT INTO produtos (hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, l_ativo) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -58,14 +52,8 @@ public class ProductDAO {
     }
 
     public boolean validate(String nome, String ean13){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try {
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String nomeVerify = "select * from produtos where nome =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(nomeVerify);
@@ -88,14 +76,8 @@ public class ProductDAO {
     }
 
     public Product consultar(UUID hash){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "select * from produtos where hash =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
@@ -126,14 +108,8 @@ public class ProductDAO {
     }
 
     public void deletar(String hash){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             int affectedRows = 0;
 
@@ -148,14 +124,8 @@ public class ProductDAO {
     }
 
     public void LativoAlterar(String hash, boolean lativo){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "update produtos set l_ativo =?, dtupdate=? where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
@@ -171,14 +141,8 @@ public class ProductDAO {
     }
 
     public void alterar(UUID hash, Product product){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "update produtos set descricao=?, preco=?, quantidade=?, estoque_min=?, dtupdate=?, l_ativo=true where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
@@ -197,16 +161,10 @@ public class ProductDAO {
     }
 
     public boolean consultarLativoAntigo(UUID hash){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
         boolean lativo = false;
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "select * from produtos where hash =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
@@ -225,16 +183,10 @@ public class ProductDAO {
     }
 
     public ArrayList filtrarProdutosLativo(boolean lativo){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
         ArrayList<Product> listaProdutos = new ArrayList();
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "select * from produtos where l_ativo =?";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
@@ -265,16 +217,10 @@ public class ProductDAO {
     }
 
     public ArrayList filtrarProdutosQntMenorMin(){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
         ArrayList<Product> listaProdutos = new ArrayList();
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "select * from produtos where quantidade<estoque_min AND l_ativo=true";
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
@@ -304,14 +250,8 @@ public class ProductDAO {
     }
 
     public void editPriceBatch(UUID hash, float value){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "update produtos set preco=?, dtupdate=? where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
@@ -327,14 +267,8 @@ public class ProductDAO {
     }
 
     public void editQntBatch(UUID hash, float value){
-        url="jdbc:postgresql://localhost:5432/newgo";
-        usuario="postgres";
-        senha="root";
 
-        try{
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("Conexao realizada!!!");
+        try (Connection con = DatabaseConnection.getConnection()){
 
             String productSelect = "update produtos set quantidade=?, dtupdate=? where hash =?";
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
