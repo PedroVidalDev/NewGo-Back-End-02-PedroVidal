@@ -435,6 +435,7 @@ public class ProductService {
         for (JsonElement element : array){
             JsonObject elementObject = element.getAsJsonObject();
             String hash = elementObject.get("hash").getAsString();
+            String operacao = elementObject.get("operacao").getAsString();
             Float valor = elementObject.get("valor").getAsFloat();
 
             res = findProduto(hash);
@@ -448,15 +449,32 @@ public class ProductService {
 
                 if (res.get("lativo").getAsBoolean()) {
 
-                    if ((res.get("quantidade").getAsFloat() + valor) < 0) {
-                        JsonObject resErro = element.getAsJsonObject();
-                        resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
-                        resArray.add(resErro);
-                    } else {
+                    if(operacao.equals("aumentar")){
                         Float valorFinal = res.get("quantidade").getAsFloat() + valor;
                         ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
                         res = findProduto(hash);
                         resArray.add(res);
+                    }
+
+                    else if(operacao.equals("diminuir")){
+                        Float valorFinal = res.get("quantidade").getAsFloat() - valor;
+
+                        if(valorFinal < 0){
+                            JsonObject resErro = element.getAsJsonObject();
+                            resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
+                            resArray.add(resErro);
+                        } else{
+                            ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
+                            res = findProduto(hash);
+                            resArray.add(res);
+                        }
+
+                    }
+
+                    else{
+                        JsonObject resErro = element.getAsJsonObject();
+                        resErro.addProperty("aviso", messages.getString("error.invalidOperation"));
+                        resArray.add(resErro);
                     }
 
                 } else{
