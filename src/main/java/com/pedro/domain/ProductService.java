@@ -9,12 +9,14 @@ import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
 import javax.swing.text.AttributeSet;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 public class ProductService {
 
     public JsonObject criarProduto(JsonObject produto) {
         ProductDAO ProductCRUD = new ProductDAO();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
         Gson gson = new Gson();
 
         JsonObject array = new JsonObject();
@@ -47,39 +49,39 @@ public class ProductService {
                 min_quantidade = produto.get("min_quantidade").getAsInt();
             }
         } catch (NullPointerException e) {
-            array.addProperty("mensagem", "Carencia de dados detectada ao criar produto...");
+            array.addProperty("mensagem", messages.getString("error.invalidBody"));
             return array;
         }
 
         if (preco < 0) {
-            array.addProperty("mensagem", "Preco nao deve ser menor que zero.");
+            array.addProperty("mensagem", messages.getString("error.negativePrice"));
             return array;
         }
 
         else if(quantidade < 0){
-            array.addProperty("mensagem", "Quantidade nao deve ser menor que zero.");
+            array.addProperty("mensagem", messages.getString("error.negativeQnt"));
             return array;
         }
 
         else if(min_quantidade < 0){
-            array.addProperty("mensagem", "Estoque minimo nao deve ser menor que zero.");
+            array.addProperty("mensagem", messages.getString("error.negativeMinQnt"));
             return array;
         }
 
         if (produto.get("nome").isJsonNull()) {
-            array.addProperty("mensagem", "O parametro nome esta nulo. Erro.");
+            array.addProperty("mensagem", messages.getString("error.nullName"));
             return array;
 
         } else {
             nome = produto.get("nome").getAsString();
             if (nome.isEmpty()) {
-                array.addProperty("mensagem", "O parametro nome esta vazio. Erro.");
+                array.addProperty("mensagem", messages.getString("error.emptyName"));
                 return array;
             }
         }
 
         if (ProductCRUD.validate(nome, ean13)) {
-            array.addProperty("mensagem", "Ja existe um produto com esse nome cadastrado no sistema.");
+            array.addProperty("mensagem", messages.getString("error.duplicateProduct"));
             return array;
         }
 
@@ -109,6 +111,7 @@ public class ProductService {
 
     public JsonObject findProduto(String hash) {
         Gson gson = new Gson();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         ProductDAO ProductCRUD = new ProductDAO();
         JsonObject res = new JsonObject();
@@ -118,12 +121,12 @@ public class ProductService {
         try {
             product = ProductCRUD.consultar(UUID.fromString(hash));
         } catch(Exception e){
-            res.addProperty("mensagem", "Hash invalida.");
+            res.addProperty("mensagem", messages.getString("error.invalidHash"));
             return res;
         }
 
         if(product == null){
-            res.addProperty("mensagem", "Produto nao encontrado.");
+            res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
         } else{
             ProductOutput productOutput = productToOutput(product);
 
@@ -134,6 +137,8 @@ public class ProductService {
     }
 
     public JsonObject editarProduto(String hash, JsonObject info) {
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
+
         float preco;
         String descricao;
         int quantidade;
@@ -154,14 +159,14 @@ public class ProductService {
             lativo = info.get("lativo").getAsBoolean();
 
         } catch (NullPointerException e) {
-            res.addProperty("mensagem", "Carencia de dados.");
+            res.addProperty("mensagem", messages.getString("error.invalidBody"));
             return res;
         }
 
         Product product_old = ProductCRUD.consultar(UUID.fromString(hash));
 
         if (product_old == null) {
-            res.addProperty("mensagem", "Produto nao encontrado.");
+            res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         }
 
@@ -182,34 +187,34 @@ public class ProductService {
         boolean lativo_antigo = checkLativoBefore(hash);
 
         if(product_old.equals(product)){
-            res.addProperty("mensagem", "Nenhuma alteracao foi feita no produto.");
+            res.addProperty("mensagem", messages.getString("error.updateDontExist"));
             return res;
         }
 
         else {
 
             if (!lativo_antigo && !lativo) {
-                res.addProperty("mensagem", "Produto inativo, impossivel atualizar..");
+                res.addProperty("mensagem", messages.getString("error.productInactive"));
                 return res;
             }
 
             else if (product.getDescricao().isEmpty()) {
-                res.addProperty("mensagem", "Descricao nao pode ser vazia.");
+                res.addProperty("mensagem", messages.getString("error.emptyDesc"));
                 return res;
             }
 
             else if(product.getPreco() < 0){
-                res.addProperty("mensagem", "Preco nao pode ser negativo.");
+                res.addProperty("mensagem", messages.getString("error.negativePrice"));
                 return res;
             }
 
             else if(product.getQuantidade() < 0){
-                res.addProperty("mensagem", "Quantidade nao pode ser negativa.");
+                res.addProperty("mensagem", messages.getString("error.negativeQnt"));
                 return res;
             }
 
             else if(product.getEstoquemin() < 0){
-                res.addProperty("mensagem", "Estoque minimo nao pode ser negativo.");
+                res.addProperty("mensagem", messages.getString("error.negativeMinQnt"));
                 return res;
             }
 
@@ -223,6 +228,7 @@ public class ProductService {
 
     public JsonObject excluirProduto(String hash) {
         ProductDAO ProductCRUD = new ProductDAO();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonObject res = new JsonObject();
 
@@ -231,17 +237,18 @@ public class ProductService {
         ProductOutput productOutput = productToOutput(product);
 
         if (productOutput == null) {
-            res.addProperty("mensagem", "Produto nao encontrado.");
+            res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         } else {
             ProductCRUD.deletar(hash);
         }
-        res.addProperty("mensagem", "Produto deletado.");
+        res.addProperty("mensagem", messages.getString("product.deleteSuccess"));
         return res;
     }
 
     public JsonObject alterarLativo(String hash, JsonObject info){
         ProductDAO ProductCRUD = new ProductDAO();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         Gson gson = new Gson();
 
@@ -252,14 +259,14 @@ public class ProductService {
         try {
             lativo = info.get("lativo").getAsBoolean();
         } catch(NullPointerException e){
-            res.addProperty("mensagem", "Carencia de dados.");
+            res.addProperty("mensagem", messages.getString("error.invalidBody"));
             return res;
         }
 
         Product produto = ProductCRUD.consultar(UUID.fromString(hash));
 
         if(produto == null){
-            res.addProperty("mensagem", "Produto nao encontrado.");
+            res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         } else{
             ProductCRUD.LativoAlterar(hash, lativo);
@@ -339,6 +346,7 @@ public class ProductService {
 
     public JsonArray editarPrecoLote(JsonArray array){
         ProductDAO ProductCRUD = new ProductDAO();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonArray resArray = new JsonArray();
         JsonObject res = new JsonObject();
@@ -375,7 +383,7 @@ public class ProductService {
 
                     if(valor > 100){
                         JsonObject resErro = element.getAsJsonObject();
-                        resErro.addProperty("aviso", "Valor nao deve ser maior que 100");
+                        resErro.addProperty("aviso", messages.getString("error.valueHigher100"));
                         resArray.add(resErro);
                     } else{
                         finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
@@ -391,7 +399,7 @@ public class ProductService {
 
                 else{
                     JsonObject resErro = element.getAsJsonObject();
-                    resErro.addProperty("aviso", "Operacao invalida.");
+                    resErro.addProperty("aviso", messages.getString("error.invalidOperation"));
                     resArray.add(resErro);
                 }
             }
@@ -402,6 +410,7 @@ public class ProductService {
 
     public JsonArray editarQntLote(JsonArray array){
         ProductDAO ProductCRUD = new ProductDAO();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonArray resArray = new JsonArray();
         JsonObject res = new JsonObject();
@@ -421,7 +430,7 @@ public class ProductService {
             } catch(NullPointerException e){
                 if((res.get("quantidade").getAsFloat() + valor) < 0){
                     JsonObject resErro = element.getAsJsonObject();
-                    resErro.addProperty("aviso", "Quantidade nao pode resultar em algo menor que 0");
+                    resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
                     resArray.add(resErro);
                 } else{
                     Float valorFinal = res.get("quantidade").getAsFloat() + valor;
