@@ -17,16 +17,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
 
     <servlet-mapping>
         <servlet-name> ProductsServlet </servlet-name>
-        <url-pattern> /products </url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name> ProductOneServlet </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductOneServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name> ProductOneServlet </servlet-name>
         <url-pattern> /products/* </url-pattern>
     </servlet-mapping>
 
@@ -41,63 +31,23 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
     </servlet-mapping>
 
     <servlet>
-        <servlet-name> ProductsConsultarServletLativo </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductsConsultarLativo</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name> ProductsConsultarServletLativo </servlet-name>
-        <url-pattern> /lativo/products </url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductsConsultarLativoTrueOne</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name> ProductsConsultarServletLativoOne </servlet-name>
-        <url-pattern> /lativoTrueOne/products/* </url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductsConsultarQntMenorMin</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name> ProductsConsultarQntMenorMin </servlet-name>
-        <url-pattern> /consultarQntMenorMin/products </url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name> ProductsCreateBatch </servlet-name>
         <servlet-class>com.pedro.application.servlets.ProductsCreateBatch</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name> ProductsCreateBatch </servlet-name>
-        <url-pattern> /createBatch/products </url-pattern>
+        <url-pattern> /products/createBatch </url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name> ProductsEditPriceBatch </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductsEditPriceBatch</servlet-class>
+        <servlet-name> ProductsEditBatch </servlet-name>
+        <servlet-class>com.pedro.application.servlets.ProductsEditBatch</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name> ProductsEditPriceBatch </servlet-name>
-        <url-pattern> /updatePriceBatch/products </url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name> ProductsQntPriceBatch </servlet-name>
-        <servlet-class>com.pedro.application.servlets.ProductsEditQntBatch</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name> ProductsQntPriceBatch </servlet-name>
-        <url-pattern> /updateQntBatch/products </url-pattern>
+        <servlet-name> ProductsEditBatch </servlet-name>
+        <url-pattern> /products/editBatch/* </url-pattern>
     </servlet-mapping>
 
 </web-app>
