@@ -5,9 +5,7 @@ import com.pedro.application.DTOs.ProductInput;
 import com.pedro.application.DTOs.ProductOutput;
 import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
-import javax.swing.text.AttributeSet;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -122,7 +120,7 @@ public class ProductService {
         Product product;
 
         try {
-            product = ProductCRUD.consultar(UUID.fromString(hash));
+            product = ProductCRUD.findByHash(UUID.fromString(hash));
         } catch(Exception e){
             res.addProperty("mensagem", messages.getString("error.invalidHash"));
             return res;
@@ -167,7 +165,7 @@ public class ProductService {
             return res;
         }
 
-        Product product_old = ProductCRUD.consultar(UUID.fromString(hash));
+        Product product_old = ProductCRUD.findByHash(UUID.fromString(hash));
 
         if (product_old == null) {
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
@@ -223,7 +221,7 @@ public class ProductService {
             }
 
             ProductCRUD.alterar(UUID.fromString(hash), product);
-            ProductOutput finalProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+            ProductOutput finalProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
 
             res = parseJsonObject(gson.toJson(finalProduct));
             return res;
@@ -238,7 +236,7 @@ public class ProductService {
 
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.consultar(UUID.fromString(hash));
+        Product product = ProductCRUD.findByHash(UUID.fromString(hash));
 
         ProductOutput productOutput = productMapper.productToOutput(product);
 
@@ -246,7 +244,7 @@ public class ProductService {
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         } else {
-            ProductCRUD.deletar(hash);
+            ProductCRUD.deleteByHash(hash);
         }
         res.addProperty("mensagem", messages.getString("product.deleteSuccess"));
         return res;
@@ -267,7 +265,7 @@ public class ProductService {
             return res;
         }
 
-        Product product = ProductCRUD.consultar(UUID.fromString(hash));
+        Product product = ProductCRUD.findByHash(UUID.fromString(hash));
 
         if(product == null){
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
@@ -275,7 +273,7 @@ public class ProductService {
         } else{
             ProductCRUD.LativoAlterar(hash, lativo);
 
-            Product newProduct = ProductCRUD.consultar(UUID.fromString(hash));
+            Product newProduct = ProductCRUD.findByHash(UUID.fromString(hash));
 
             res.addProperty("hash", newProduct.getHash().toString());
             res.addProperty("nome", newProduct.getNome());
@@ -319,7 +317,7 @@ public class ProductService {
         boolean lativoBool;
         lativoBool = Boolean.parseBoolean(lativo);
 
-        ArrayList<Product> listProducts = ProductCRUD.filtrarProdutosLativo(lativoBool);
+        ArrayList<Product> listProducts = ProductCRUD.findAllByLativo(lativoBool);
 
         ArrayList<ProductOutput> listDTO = new ArrayList<ProductOutput>();
 
@@ -338,7 +336,7 @@ public class ProductService {
 
         Gson gson = new Gson();
 
-        ArrayList<Product> listProducts = ProductCRUD.filtrarProdutosQntMenorMin();
+        ArrayList<Product> listProducts = ProductCRUD.findAllByQntLowerMin();
         ArrayList<ProductOutput> listDTO = new ArrayList<ProductOutput>();
 
         for (Product product : listProducts){
@@ -410,7 +408,7 @@ public class ProductService {
 
                             ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
 
                             JsonObject resSuccess = new JsonObject();
 
@@ -436,7 +434,7 @@ public class ProductService {
 
                                 JsonObject resSuccess = new JsonObject();
 
-                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
 
                                 resSuccess.addProperty("hash", newProduct.getHash().toString());
                                 resSuccess.addProperty("nome", newProduct.getNome());
@@ -511,7 +509,7 @@ public class ProductService {
 
                             JsonObject resSuccess = new JsonObject();
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
 
                             resSuccess.addProperty("hash", newProduct.getHash().toString());
                             resSuccess.addProperty("nome", newProduct.getNome());
@@ -533,7 +531,7 @@ public class ProductService {
 
                                 JsonObject resSuccess = new JsonObject();
 
-                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
 
                                 resSuccess.addProperty("hash", newProduct.getHash().toString());
                                 resSuccess.addProperty("nome", newProduct.getNome());
