@@ -120,7 +120,7 @@ public class ProductService {
         Product product;
 
         try {
-            product = ProductCRUD.findByHash(UUID.fromString(hash));
+            product = ProductCRUD.findOneByHash(UUID.fromString(hash));
         } catch(Exception e){
             res.addProperty("mensagem", messages.getString("error.invalidHash"));
             return res;
@@ -165,7 +165,7 @@ public class ProductService {
             return res;
         }
 
-        Product product_old = ProductCRUD.findByHash(UUID.fromString(hash));
+        Product product_old = ProductCRUD.findOneByHash(UUID.fromString(hash));
 
         if (product_old == null) {
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
@@ -221,7 +221,7 @@ public class ProductService {
             }
 
             ProductCRUD.alterar(UUID.fromString(hash), product);
-            ProductOutput finalProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
+            ProductOutput finalProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
             res = parseJsonObject(gson.toJson(finalProduct));
             return res;
@@ -236,7 +236,7 @@ public class ProductService {
 
         JsonObject res = new JsonObject();
 
-        Product product = ProductCRUD.findByHash(UUID.fromString(hash));
+        Product product = ProductCRUD.findOneByHash(UUID.fromString(hash));
 
         ProductOutput productOutput = productMapper.productToOutput(product);
 
@@ -265,7 +265,7 @@ public class ProductService {
             return res;
         }
 
-        Product product = ProductCRUD.findByHash(UUID.fromString(hash));
+        Product product = ProductCRUD.findOneByHash(UUID.fromString(hash));
 
         if(product == null){
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
@@ -273,7 +273,7 @@ public class ProductService {
         } else{
             ProductCRUD.LativoAlterar(hash, lativo);
 
-            Product newProduct = ProductCRUD.findByHash(UUID.fromString(hash));
+            Product newProduct = ProductCRUD.findOneByHash(UUID.fromString(hash));
 
             res.addProperty("hash", newProduct.getHash().toString());
             res.addProperty("nome", newProduct.getNome());
@@ -408,7 +408,7 @@ public class ProductService {
 
                             ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
                             JsonObject resSuccess = new JsonObject();
 
@@ -434,7 +434,7 @@ public class ProductService {
 
                                 JsonObject resSuccess = new JsonObject();
 
-                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
                                 resSuccess.addProperty("hash", newProduct.getHash().toString());
                                 resSuccess.addProperty("nome", newProduct.getNome());
@@ -509,7 +509,7 @@ public class ProductService {
 
                             JsonObject resSuccess = new JsonObject();
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
                             resSuccess.addProperty("hash", newProduct.getHash().toString());
                             resSuccess.addProperty("nome", newProduct.getNome());
@@ -531,7 +531,7 @@ public class ProductService {
 
                                 JsonObject resSuccess = new JsonObject();
 
-                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findByHash(UUID.fromString(hash)));
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
                                 resSuccess.addProperty("hash", newProduct.getHash().toString());
                                 resSuccess.addProperty("nome", newProduct.getNome());

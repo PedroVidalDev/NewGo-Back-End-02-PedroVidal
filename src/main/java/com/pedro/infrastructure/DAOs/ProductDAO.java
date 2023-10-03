@@ -35,7 +35,7 @@ public class ProductDAO {
             statement.setBoolean(9, false);
 
             statement.executeUpdate();
-            Product newProduct = findByHash(product.getHash());
+            Product newProduct = findOneByHash(product.getHash());
 
             return newProduct;
 
@@ -75,7 +75,6 @@ public class ProductDAO {
 
             String productSelect = query;
             PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            //preparedStatementNome.setObject(1, hash);
             ResultSet rs = preparedStatementNome.executeQuery();
 
             if(rs.next()){
@@ -102,6 +101,10 @@ public class ProductDAO {
         return null;
     }
 
+    public Product findOneByHash(UUID hash){
+        return findOne("select * from produtos where hash='"+hash+"'");
+    }
+
     public ArrayList findAll(String query){
         ArrayList<Product> listaProdutos = new ArrayList();
 
@@ -121,7 +124,7 @@ public class ProductDAO {
                 int quantidade = rs.getInt("quantidade");
                 int estoque_min = rs.getInt("estoque_min");
                 Timestamp dtcreate = rs.getTimestamp("dtcreate");
-                Timestamp dtupdate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtupdate");
                 Boolean lativo = rs.getBoolean("l_ativo");
 
                 Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
@@ -141,38 +144,6 @@ public class ProductDAO {
 
     public ArrayList findAllByLativo(boolean lativo){
         return findAll("select * from produtos where l_ativo ="+lativo);
-    }
-
-    public Product findByHash(UUID hash){
-
-        try (Connection con = DatabaseConnection.getConnection()){
-
-            String productSelect = "select * from produtos where hash =?";
-            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            preparedStatementNome.setObject(1, hash);
-            ResultSet rs = preparedStatementNome.executeQuery();
-
-            if(rs.next()){
-                int id = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String descricao = rs.getString("descricao");
-                String ean13 = rs.getString("ean13");
-                float preco = rs.getFloat("preco");
-                int quantidade = rs.getInt("quantidade");
-                int estoque_min = rs.getInt("estoque_min");
-                Timestamp dtcreate = rs.getTimestamp("dtcreate");
-                Timestamp dtupdate = rs.getTimestamp("dtupdate");
-                boolean lativo = rs.getBoolean("l_ativo");
-
-                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
-
-                return product;
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public void deleteByHash(String hash){
