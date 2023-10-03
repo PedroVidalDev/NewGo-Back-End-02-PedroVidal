@@ -1,14 +1,8 @@
 package com.pedro.infrastructure.DAOs;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.pedro.application.DTOs.ProductInput;
 import com.pedro.infrastructure.DatabaseConnection;
 import com.pedro.infrastructure.entities.Product;
-import org.postgresql.jdbc2.ArrayAssistant;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -40,7 +34,7 @@ public class ProductDAO {
             statement.setBoolean(9, false);
 
             statement.executeUpdate();
-            Product newProduct = consultar(product.getHash());
+            Product newProduct = findByHash(product.getHash());
 
             return newProduct;
 
@@ -75,7 +69,7 @@ public class ProductDAO {
         return false;
     }
 
-    public Product consultar(UUID hash){
+    public Product findByHash(UUID hash){
 
         try (Connection con = DatabaseConnection.getConnection()){
 
@@ -107,7 +101,7 @@ public class ProductDAO {
         return null;
     }
 
-    public void deletar(String hash){
+    public void deleteByHash(String hash){
 
         try (Connection con = DatabaseConnection.getConnection()){
 
@@ -182,7 +176,7 @@ public class ProductDAO {
         return lativo;
     }
 
-    public ArrayList filtrarProdutosLativo(boolean lativo){
+    public ArrayList findAllByLativo(boolean lativo){
 
         ArrayList<Product> listaProdutos = new ArrayList();
 
@@ -216,7 +210,7 @@ public class ProductDAO {
         return listaProdutos;
     }
 
-    public ArrayList filtrarProdutosQntMenorMin(){
+    public ArrayList findAllByQntLowerMin(){
 
         ArrayList<Product> listaProdutos = new ArrayList();
 
