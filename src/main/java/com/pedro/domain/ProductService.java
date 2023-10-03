@@ -256,8 +256,6 @@ public class ProductService {
         ProductDAO ProductCRUD = new ProductDAO();
         ResourceBundle messages = ResourceBundle.getBundle("messages");
 
-        Gson gson = new Gson();
-
         JsonObject res = new JsonObject();
 
         boolean lativo;
@@ -269,15 +267,22 @@ public class ProductService {
             return res;
         }
 
-        Product produto = ProductCRUD.consultar(UUID.fromString(hash));
+        Product product = ProductCRUD.consultar(UUID.fromString(hash));
 
-        if(produto == null){
+        if(product == null){
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         } else{
             ProductCRUD.LativoAlterar(hash, lativo);
 
-            res = parseJsonObject(gson.toJson(ProductCRUD.consultar(UUID.fromString(hash))));
+            Product newProduct = ProductCRUD.consultar(UUID.fromString(hash));
+
+            res.addProperty("hash", newProduct.getHash().toString());
+            res.addProperty("nome", newProduct.getNome());
+            res.addProperty("descricao", newProduct.getDescricao());
+            res.addProperty("l_ativo", newProduct.getLativo());
+            res.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
             return res;
         }
     }
@@ -287,6 +292,20 @@ public class ProductService {
 
         boolean lativo_antigo = ProductCRUD.consultarLativoAntigo(UUID.fromString(hash));
         return lativo_antigo;
+    }
+
+    public JsonObject findProdutoLativoTrue(String hash){
+        JsonObject product = findProduto(hash);
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
+
+        if(product.get("lativo").getAsBoolean()){
+            return product;
+        } else{
+            JsonObject resErro = new JsonObject();
+            resErro.addProperty("hash", hash);
+            resErro.addProperty("aviso", messages.getString("error.productInactive"));
+            return resErro;
+        }
     }
 
     public JsonArray filtrarProdutosPorLativo(String lativo){
@@ -354,6 +373,8 @@ public class ProductService {
 
     public JsonArray editarPrecoLote(JsonArray array){
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
+
         ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonArray resArray = new JsonArray();
@@ -384,9 +405,17 @@ public class ProductService {
 
                         ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                        res = findProduto(hash);
+                        ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
 
-                        resArray.add(res);
+                        JsonObject resSuccess = new JsonObject();
+
+                        resSuccess.addProperty("hash", newProduct.getHash().toString());
+                        resSuccess.addProperty("nome", newProduct.getNome());
+                        resSuccess.addProperty("descricao", newProduct.getDescricao());
+                        resSuccess.addProperty("preco", newProduct.getPreco());
+                        resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                        resArray.add(resSuccess);
                     }
 
                     else if(operacao.equals("diminuir")){
@@ -400,9 +429,17 @@ public class ProductService {
 
                             ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                            res = findProduto(hash);
+                            JsonObject resSuccess = new JsonObject();
 
-                            resArray.add(res);
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+
+                            resSuccess.addProperty("hash", newProduct.getHash().toString());
+                            resSuccess.addProperty("nome", newProduct.getNome());
+                            resSuccess.addProperty("descricao", newProduct.getDescricao());
+                            resSuccess.addProperty("preco", newProduct.getPreco());
+                            resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                            resArray.add(resSuccess);
                         }
 
                     }
@@ -427,6 +464,8 @@ public class ProductService {
 
     public JsonArray editarQntLote(JsonArray array){
         ProductDAO ProductCRUD = new ProductDAO();
+        ProductMapper productMapper = new ProductMapper();
+
         ResourceBundle messages = ResourceBundle.getBundle("messages");
 
         JsonArray resArray = new JsonArray();
@@ -452,8 +491,18 @@ public class ProductService {
                     if(operacao.equals("aumentar")){
                         Float valorFinal = res.get("quantidade").getAsFloat() + valor;
                         ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
-                        res = findProduto(hash);
-                        resArray.add(res);
+
+                        JsonObject resSuccess = new JsonObject();
+
+                        ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+
+                        resSuccess.addProperty("hash", newProduct.getHash().toString());
+                        resSuccess.addProperty("nome", newProduct.getNome());
+                        resSuccess.addProperty("descricao", newProduct.getDescricao());
+                        resSuccess.addProperty("quantidade", newProduct.getQuantidade());
+                        resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                        resArray.add(resSuccess);
                     }
 
                     else if(operacao.equals("diminuir")){
@@ -463,10 +512,21 @@ public class ProductService {
                             JsonObject resErro = element.getAsJsonObject();
                             resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
                             resArray.add(resErro);
+
                         } else{
                             ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
-                            res = findProduto(hash);
-                            resArray.add(res);
+
+                            JsonObject resSuccess = new JsonObject();
+
+                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.consultar(UUID.fromString(hash)));
+
+                            resSuccess.addProperty("hash", newProduct.getHash().toString());
+                            resSuccess.addProperty("nome", newProduct.getNome());
+                            resSuccess.addProperty("descricao", newProduct.getDescricao());
+                            resSuccess.addProperty("quantidade", newProduct.getQuantidade());
+                            resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                            resArray.add(resSuccess);
                         }
 
                     }
