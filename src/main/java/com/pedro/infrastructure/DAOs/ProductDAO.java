@@ -3,6 +3,7 @@ package com.pedro.infrastructure.DAOs;
 import com.pedro.infrastructure.DatabaseConnection;
 import com.pedro.infrastructure.entities.Product;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -67,6 +68,74 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Product findOne(String query){
+        try (Connection con = DatabaseConnection.getConnection()){
+
+            String productSelect = query;
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            //preparedStatementNome.setObject(1, hash);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            if(rs.next()){
+                int id = rs.getInt("id");
+                String hash = rs.getString("hash");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String ean13 = rs.getString("ean13");
+                float preco = rs.getFloat("preco");
+                int quantidade = rs.getInt("quantidade");
+                int estoque_min = rs.getInt("estoque_min");
+                Timestamp dtcreate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtupdate");
+                boolean lativo = rs.getBoolean("l_ativo");
+
+                Product product = new Product(id, UUID.fromString(hash), nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
+
+                return product;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList findAll(String query){
+        ArrayList<Product> listaProdutos = new ArrayList();
+
+        try (Connection con = DatabaseConnection.getConnection()){
+
+            String productSelect = query;
+            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
+            ResultSet rs = preparedStatementNome.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                UUID hash = UUID.fromString(rs.getString("hash"));
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String ean13 = rs.getString("ean13");
+                float preco = rs.getFloat("preco");
+                int quantidade = rs.getInt("quantidade");
+                int estoque_min = rs.getInt("estoque_min");
+                Timestamp dtcreate = rs.getTimestamp("dtcreate");
+                Timestamp dtupdate = rs.getTimestamp("dtcreate");
+
+                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, true);
+
+                listaProdutos.add(product);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaProdutos;
+    }
+
+    public ArrayList findAllByQntLowerMin(){
+        return findAll("select * from produtos where quantidade<estoque_min AND l_ativo=true");
     }
 
     public Product findByHash(UUID hash){
@@ -200,39 +269,6 @@ public class ProductDAO {
                 Timestamp dtupdate = rs.getTimestamp("dtupdate");
 
                 Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
-
-                listaProdutos.add(product);
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return listaProdutos;
-    }
-
-    public ArrayList findAllByQntLowerMin(){
-
-        ArrayList<Product> listaProdutos = new ArrayList();
-
-        try (Connection con = DatabaseConnection.getConnection()){
-
-            String productSelect = "select * from produtos where quantidade<estoque_min AND l_ativo=true";
-            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            ResultSet rs = preparedStatementNome.executeQuery();
-
-            while(rs.next()){
-                int id = rs.getInt("id");
-                UUID hash = UUID.fromString(rs.getString("hash"));
-                String nome = rs.getString("nome");
-                String descricao = rs.getString("descricao");
-                String ean13 = rs.getString("ean13");
-                float preco = rs.getFloat("preco");
-                int quantidade = rs.getInt("quantidade");
-                int estoque_min = rs.getInt("estoque_min");
-                Timestamp dtcreate = rs.getTimestamp("dtcreate");
-                Timestamp dtupdate = rs.getTimestamp("dtcreate");
-
-                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, true);
 
                 listaProdutos.add(product);
             }
