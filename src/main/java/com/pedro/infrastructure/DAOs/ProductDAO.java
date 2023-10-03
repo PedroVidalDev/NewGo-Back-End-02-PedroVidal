@@ -122,8 +122,9 @@ public class ProductDAO {
                 int estoque_min = rs.getInt("estoque_min");
                 Timestamp dtcreate = rs.getTimestamp("dtcreate");
                 Timestamp dtupdate = rs.getTimestamp("dtcreate");
+                Boolean lativo = rs.getBoolean("l_ativo");
 
-                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, true);
+                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
 
                 listaProdutos.add(product);
             }
@@ -136,6 +137,10 @@ public class ProductDAO {
 
     public ArrayList findAllByQntLowerMin(){
         return findAll("select * from produtos where quantidade<estoque_min AND l_ativo=true");
+    }
+
+    public ArrayList findAllByLativo(boolean lativo){
+        return findAll("select * from produtos where l_ativo ="+lativo);
     }
 
     public Product findByHash(UUID hash){
@@ -243,40 +248,6 @@ public class ProductDAO {
         }
 
         return lativo;
-    }
-
-    public ArrayList findAllByLativo(boolean lativo){
-
-        ArrayList<Product> listaProdutos = new ArrayList();
-
-        try (Connection con = DatabaseConnection.getConnection()){
-
-            String productSelect = "select * from produtos where l_ativo =?";
-            PreparedStatement preparedStatementNome = con.prepareStatement(productSelect);
-            preparedStatementNome.setBoolean(1, lativo);
-            ResultSet rs = preparedStatementNome.executeQuery();
-
-            while(rs.next()){
-                int id = rs.getInt("id");
-                UUID hash = UUID.fromString(rs.getString("hash"));
-                String nome = rs.getString("nome");
-                String descricao = rs.getString("descricao");
-                String ean13 = rs.getString("ean13");
-                float preco = rs.getFloat("preco");
-                int quantidade = rs.getInt("quantidade");
-                int estoque_min = rs.getInt("estoque_min");
-                Timestamp dtcreate = rs.getTimestamp("dtcreate");
-                Timestamp dtupdate = rs.getTimestamp("dtupdate");
-
-                Product product = new Product(id, hash, nome, descricao, ean13, preco, quantidade, estoque_min, dtcreate, dtupdate, lativo);
-
-                listaProdutos.add(product);
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return listaProdutos;
     }
 
     public void editPriceBatch(UUID hash, float value){
