@@ -14,26 +14,38 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ProductsEditQntBatch extends HttpServlet {
+public class ProductsEditBatch extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductService productService = new ProductService();
-
         Gson gson = new Gson();
 
         PrintWriter writer = resp.getWriter();
+
+        JsonArray resArray;
+
+        String[] pathInfo = req.getPathInfo().split("/");
+
         BufferedReader data = req.getReader();
 
         JsonParser parser = new JsonParser();
         JsonElement tree = parser.parse(data);
         JsonArray array = tree.getAsJsonArray();
 
-        JsonArray res;
+        if(pathInfo[1].equals("price")){
+            resArray = productService.editarPrecoLote(array);
 
-        res = productService.editarQntLote(array);
+            writer.println(gson.toJson(resArray));
+        }
 
-        writer.println(gson.toJson(res));
+        else if(pathInfo[1].equals("qnt")){
+            resArray = productService.editarQntLote(array);
+
+            writer.println(gson.toJson(resArray));
+        }
 
         writer.flush();
     }
+
+
 }
