@@ -2,6 +2,7 @@ package com.pedro.domain;
 
 import com.google.gson.*;
 import com.pedro.application.DTOs.ProductBatchPriceDTO;
+import com.pedro.application.DTOs.ProductBatchQntDTO;
 import com.pedro.application.DTOs.ProductInputDTO;
 import com.pedro.application.DTOs.ProductOutputDTO;
 import com.pedro.infrastructure.DAOs.ProductDAO;
@@ -388,10 +389,6 @@ public class ProductService {
 
             ProductBatchPriceDTO productBatchPriceDTO;
 
-            Float valor;
-            String operacao;
-            String hash;
-
             try {
 
                 productBatchPriceDTO = new ProductBatchPriceDTO(
@@ -496,50 +493,51 @@ public class ProductService {
         ProductMapper productMapper = new ProductMapper();
 
         ResourceBundle messages = ResourceBundle.getBundle("messages");
+        Gson gson = new Gson();
 
         JsonArray resArray = new JsonArray();
-        JsonObject res = new JsonObject();
+        JsonObject selectedProduct = new JsonObject();
 
         for (JsonElement element : array){
             JsonObject elementObject = element.getAsJsonObject();
-            String hash;
-            String operacao;
-            Float valor;
+
+            ProductBatchQntDTO productBatchQntDTO;
 
             try {
-                hash = elementObject.get("hash").getAsString();
-                valor = elementObject.get("valor").getAsFloat();
+                productBatchQntDTO = new ProductBatchQntDTO(
+                        UUID.fromString(elementObject.get("hash").getAsString()),
+                        elementObject.get("valor").getAsFloat()
+                );
 
-                res = findProduto(hash);
+                selectedProduct = findProduto(productBatchQntDTO.getHash().toString());
+
+                JsonObject res = parseJsonObject(gson.toJson(productBatchQntDTO));
 
                 try{
-                    JsonObject resErro = element.getAsJsonObject();
-                    resErro.addProperty("aviso", res.get("mensagem").getAsString());
-                    resArray.add(resErro);
+                    res.addProperty("aviso", selectedProduct.get("mensagem").getAsString());
+                    resArray.add(res);
 
                 } catch(NullPointerException e) {
 
-                    if (res.get("lativo").getAsBoolean()) {
+                    if (selectedProduct.get("lativo").getAsBoolean()) {
 
-                        Float valorFinal = res.get("quantidade").getAsFloat() + valor;
-                        ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
+                        Float valorFinal = selectedProduct.get("quantidade").getAsFloat() + productBatchQntDTO.getValor();
 
-                        JsonObject resSuccess = new JsonObject();
+                        if(valorFinal < 0) {
+                            res.addProperty("aviso", messages.getString("error.negativePrice"));
+                            resArray.add(res);
 
-                        ProductOutputDTO newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
+                        } else{
+                            ProductCRUD.editQntBatch(productBatchQntDTO.getHash(), valorFinal);
 
-                        resSuccess.addProperty("hash", newProduct.getHash().toString());
-                        resSuccess.addProperty("nome", newProduct.getNome());
-                        resSuccess.addProperty("descricao", newProduct.getDescricao());
-                        resSuccess.addProperty("quantidade", newProduct.getQuantidade());
-                        resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+                            res.addProperty("aviso", messages.getString("product.updateSuccess"));
 
-                        resArray.add(resSuccess);
+                            resArray.add(res);
+                        }
 
                     } else {
-                        JsonObject resErro = element.getAsJsonObject();
-                        resErro.addProperty("aviso", messages.getString("error.productInactive"));
-                        resArray.add(resErro);
+                        res.addProperty("aviso", messages.getString("error.productInactive"));
+                        resArray.add(res);
                     }
                 }
             } catch(NullPointerException e){
