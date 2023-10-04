@@ -403,32 +403,40 @@ public class ProductService {
 
                     if(res.get("lativo").getAsBoolean()){
 
-                        if(operacao.equals("aumentar")){
-                            finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
+                        if(operacao.equals("valor-fixo")){
+                            finalValue = valor;
 
-                            ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
+                            if(finalValue < 0){
+                                JsonObject resErro = element.getAsJsonObject();
+                                resErro.addProperty("aviso", messages.getString("error.negativePrice"));
+                                resArray.add(resErro);
+                            } else {
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
+                                ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
-                            JsonObject resSuccess = new JsonObject();
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
-                            resSuccess.addProperty("hash", newProduct.getHash().toString());
-                            resSuccess.addProperty("nome", newProduct.getNome());
-                            resSuccess.addProperty("descricao", newProduct.getDescricao());
-                            resSuccess.addProperty("preco", newProduct.getPreco());
-                            resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+                                JsonObject resSuccess = new JsonObject();
 
-                            resArray.add(resSuccess);
+                                resSuccess.addProperty("hash", newProduct.getHash().toString());
+                                resSuccess.addProperty("nome", newProduct.getNome());
+                                resSuccess.addProperty("descricao", newProduct.getDescricao());
+                                resSuccess.addProperty("preco", newProduct.getPreco());
+                                resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                                resArray.add(resSuccess);
+                            }
                         }
 
-                        else if(operacao.equals("diminuir")){
+                        else if(operacao.equals("porcentagem")){
 
-                            if(valor > 100){
+                            finalValue = res.get("preco").getAsFloat() + (res.get("preco").getAsFloat() * (valor / 100));
+
+                            if(finalValue < 0){
                                 JsonObject resErro = element.getAsJsonObject();
-                                resErro.addProperty("aviso", messages.getString("error.valueHigher100"));
+                                resErro.addProperty("aviso", messages.getString("error.negativePrice"));
                                 resArray.add(resErro);
                             } else{
-                                finalValue = res.get("preco").getAsFloat() - (res.get("preco").getAsFloat() * (valor / 100));
 
                                 ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
 
@@ -445,6 +453,30 @@ public class ProductService {
                                 resArray.add(resSuccess);
                             }
 
+                        }
+
+                        else if(operacao.equals("valor")){
+                            finalValue = res.get("preco").getAsFloat() + valor;
+
+                            if(finalValue < 0){
+                                JsonObject resErro = element.getAsJsonObject();
+                                resErro.addProperty("aviso", messages.getString("error.negativePrice"));
+                                resArray.add(resErro);
+                            } else{
+                                ProductCRUD.editPriceBatch(UUID.fromString(hash), finalValue);
+
+                                JsonObject resSuccess = new JsonObject();
+
+                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
+
+                                resSuccess.addProperty("hash", newProduct.getHash().toString());
+                                resSuccess.addProperty("nome", newProduct.getNome());
+                                resSuccess.addProperty("descricao", newProduct.getDescricao());
+                                resSuccess.addProperty("preco", newProduct.getPreco());
+                                resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+
+                                resArray.add(resSuccess);
+                            }
                         }
 
                         else{
@@ -489,7 +521,6 @@ public class ProductService {
 
             try {
                 hash = elementObject.get("hash").getAsString();
-                operacao = elementObject.get("operacao").getAsString();
                 valor = elementObject.get("valor").getAsFloat();
 
                 res = findProduto(hash);
@@ -503,50 +534,20 @@ public class ProductService {
 
                     if (res.get("lativo").getAsBoolean()) {
 
-                        if (operacao.equals("aumentar")) {
-                            Float valorFinal = res.get("quantidade").getAsFloat() + valor;
-                            ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
+                        Float valorFinal = res.get("quantidade").getAsFloat() + valor;
+                        ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
 
-                            JsonObject resSuccess = new JsonObject();
+                        JsonObject resSuccess = new JsonObject();
 
-                            ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
+                        ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
 
-                            resSuccess.addProperty("hash", newProduct.getHash().toString());
-                            resSuccess.addProperty("nome", newProduct.getNome());
-                            resSuccess.addProperty("descricao", newProduct.getDescricao());
-                            resSuccess.addProperty("quantidade", newProduct.getQuantidade());
-                            resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
+                        resSuccess.addProperty("hash", newProduct.getHash().toString());
+                        resSuccess.addProperty("nome", newProduct.getNome());
+                        resSuccess.addProperty("descricao", newProduct.getDescricao());
+                        resSuccess.addProperty("quantidade", newProduct.getQuantidade());
+                        resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
 
-                            resArray.add(resSuccess);
-                        } else if (operacao.equals("diminuir")) {
-                            Float valorFinal = res.get("quantidade").getAsFloat() - valor;
-
-                            if (valorFinal < 0) {
-                                JsonObject resErro = element.getAsJsonObject();
-                                resErro.addProperty("aviso", messages.getString("error.negativeQnt"));
-                                resArray.add(resErro);
-
-                            } else {
-                                ProductCRUD.editQntBatch(UUID.fromString(hash), valorFinal);
-
-                                JsonObject resSuccess = new JsonObject();
-
-                                ProductOutput newProduct = productMapper.productToOutput(ProductCRUD.findOneByHash(UUID.fromString(hash)));
-
-                                resSuccess.addProperty("hash", newProduct.getHash().toString());
-                                resSuccess.addProperty("nome", newProduct.getNome());
-                                resSuccess.addProperty("descricao", newProduct.getDescricao());
-                                resSuccess.addProperty("quantidade", newProduct.getQuantidade());
-                                resSuccess.addProperty("dtupdate", newProduct.getDtupdate().toString());
-
-                                resArray.add(resSuccess);
-                            }
-
-                        } else {
-                            JsonObject resErro = element.getAsJsonObject();
-                            resErro.addProperty("aviso", messages.getString("error.invalidOperation"));
-                            resArray.add(resErro);
-                        }
+                        resArray.add(resSuccess);
 
                     } else {
                         JsonObject resErro = element.getAsJsonObject();
