@@ -1,11 +1,11 @@
 package com.pedro.domain;
 
-import com.pedro.application.DTOs.ProductOutput;
+import com.pedro.application.DTOs.ProductOutputDTO;
 import com.pedro.infrastructure.entities.Product;
 
 public class ProductMapper {
-    public ProductOutput productToOutput(Product product){
-        ProductOutput productOutput = new ProductOutput(
+    public ProductOutputDTO productToOutput(Product product){
+        ProductOutputDTO productOutput = new ProductOutputDTO(
                 product.getId(),
                 product.getHash(),
                 product.getNome(),
