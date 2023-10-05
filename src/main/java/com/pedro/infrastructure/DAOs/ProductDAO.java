@@ -162,7 +162,7 @@ public class ProductDAO {
         }
     }
 
-    public void LativoAlterar(String hash, boolean lativo){
+    public void LativoAlterar(UUID hash, boolean lativo){
 
         try (Connection con = DatabaseConnection.getConnection()){
 
@@ -170,7 +170,7 @@ public class ProductDAO {
             PreparedStatement preparedStatement = con.prepareStatement(productSelect);
             preparedStatement.setBoolean(1, lativo);
             preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            preparedStatement.setObject(3, UUID.fromString(hash));
+            preparedStatement.setObject(3, hash);
 
             preparedStatement.executeUpdate();
 
