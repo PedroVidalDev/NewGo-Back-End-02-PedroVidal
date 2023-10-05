@@ -1,10 +1,7 @@
 package com.pedro.domain;
 
 import com.google.gson.*;
-import com.pedro.application.DTOs.ProductBatchPriceDTO;
-import com.pedro.application.DTOs.ProductBatchQntDTO;
-import com.pedro.application.DTOs.ProductInputDTO;
-import com.pedro.application.DTOs.ProductOutputDTO;
+import com.pedro.application.DTOs.*;
 import com.pedro.infrastructure.DAOs.ProductDAO;
 import com.pedro.infrastructure.entities.Product;
 
@@ -254,34 +251,34 @@ public class ProductService {
 
     public JsonObject alterarLativo(String hash, JsonObject info){
         ProductDAO ProductCRUD = new ProductDAO();
-        ResourceBundle messages = ResourceBundle.getBundle("messages");
+        ProductEditLativoDTO productEditLativoDTO;
 
-        JsonObject res = new JsonObject();
+        ResourceBundle messages = ResourceBundle.getBundle("messages");
+        Gson gson = new Gson();
 
         boolean lativo;
 
         try {
             lativo = info.get("lativo").getAsBoolean();
+
         } catch(NullPointerException e){
-            res.addProperty("mensagem", messages.getString("error.invalidBody"));
-            return res;
+            JsonObject resErro = new JsonObject();
+            resErro.addProperty("mensagem", messages.getString("error.invalidBody"));
+            return resErro;
         }
 
-        Product product = ProductCRUD.findOneByHash(UUID.fromString(hash));
+        productEditLativoDTO = new ProductEditLativoDTO(UUID.fromString(hash), lativo);
+        JsonObject res = parseJsonObject(gson.toJson(productEditLativoDTO));
+
+        Product product = ProductCRUD.findOneByHash(productEditLativoDTO.getHash());
 
         if(product == null){
             res.addProperty("mensagem", messages.getString("error.notFoundProduct"));
             return res;
         } else{
-            ProductCRUD.LativoAlterar(hash, lativo);
+            ProductCRUD.LativoAlterar(productEditLativoDTO.getHash(), productEditLativoDTO.getLativo());
 
-            Product newProduct = ProductCRUD.findOneByHash(UUID.fromString(hash));
-
-            res.addProperty("hash", newProduct.getHash().toString());
-            res.addProperty("nome", newProduct.getNome());
-            res.addProperty("descricao", newProduct.getDescricao());
-            res.addProperty("l_ativo", newProduct.getLativo());
-            res.addProperty("dtupdate", newProduct.getDtupdate().toString());
+            res.addProperty("mensagem", messages.getString("product.updateSuccess"));
 
             return res;
         }
