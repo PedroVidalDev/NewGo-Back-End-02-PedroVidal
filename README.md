@@ -9,7 +9,7 @@ Projeto com o objetivo de criar um sistema de gerenciamento de estoque.
 - Postgresql
 - JSP
 
-## Mapeamento
+## Endpoints
 - `/products/*` - Endpoint para realizar CRUD básico de produtos, usando os métodos POST para criação, GET para leitura, PUT para atualizar e DELETE para exclusão.
 
 - `/LativoAlterar/products/*` - Endpoint para alterar a coluna de l_ativo de algum produto pelo seu hash.
